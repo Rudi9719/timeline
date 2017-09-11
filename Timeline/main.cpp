@@ -10,11 +10,20 @@
 #include "Wrappers/SDL_Wrapper.hpp"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
+    bool quit = false;
+    SDL_Wrapper wrapper = SDL_Wrapper(900, 1000);
     
-    SDL_Wrapper wrapper = SDL_Wrapper(1000, 1000);
-    SDL_Delay(5000); // Replace this with main event loop
+    SDL_Event event;
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            /* If a quit event has been sent */
+            if (event.type == SDL_QUIT)
+            {
+                /* Quit the application */
+                quit = true;
+            }
+        }
+    }
     
-    std::cout << "Hello, World!\n";
-    return 0;
+    return wrapper.quit();
 }

@@ -21,6 +21,12 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     
 }
 
+int SDL_Wrapper::quit(){
+    
+    SDL_DestroyWindow(this -> mainWindow);
+    SDL_Quit();
+    return 0;
+}
 
 bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
     // Initialization! :D

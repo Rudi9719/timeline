@@ -22,6 +22,7 @@ public:
     int width;
     SDL_Window* mainWindow;
     SDL_Surface* mainSurface;
+    int quit();
     
 };
 
