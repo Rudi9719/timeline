@@ -16,12 +16,19 @@ int main(int argc, const char * argv[]) {
     SDL_Event event;
     while (!quit) {
         while (SDL_PollEvent(&event)) {
-            /* If a quit event has been sent */
-            if (event.type == SDL_QUIT)
-            {
-                /* Quit the application */
-                quit = true;
+            
+            switch(event.type) {
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_ESCAPE:
+                            quit = true;
+                            break;
+                    }
             }
+
         }
     }
     
