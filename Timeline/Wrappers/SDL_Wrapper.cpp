@@ -21,6 +21,15 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     
 }
 
+SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
+    SDL_Surface* imageSurface = IMG_Load(path);
+    if (imageSurface == NULL) {
+        std::cout << "Something went wrong loading your image." << std::endl;
+        printf("Error: %s\n", SDL_GetError());
+    }
+    
+    return imageSurface;
+}
 int SDL_Wrapper::quit(){
     
     SDL_DestroyWindow(this -> mainWindow);
