@@ -26,6 +26,11 @@
 *.a
 *.lib
 
+# IDE Files
+*.xcodeproj
+.DS*
+._*
+
 # Executables
 *.exe
 *.out
