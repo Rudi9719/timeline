@@ -8,10 +8,16 @@
 
 #include "SDL_Wrapper.hpp"
 
+bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
+
 SDL_Wrapper::SDL_Wrapper(int h, int w){
     this -> height = h;
     this -> width = w;
-    
+    if (!init(this -> mainWindow, this -> mainSurface, this -> width, this -> height)) {
+        std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
+    } else {
+        
+    }
     
 }
 
