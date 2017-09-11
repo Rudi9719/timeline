@@ -23,6 +23,10 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     
 }
 
+void SDL_Wrapper::biltSurface(SDL_Surface* newSurface) {
+    SDL_BlitSurface(newSurface, NULL, mainSurface, NULL);
+    SDL_UpdateWindowSurface(mainWindow);
+}
 
 // Loads an image from path and returns surface
 SDL_Surface* SDL_Wrapper::loadImage(const char* path) {

@@ -21,6 +21,7 @@ public:
     
     SDL_Wrapper(int h, int w);
     SDL_Surface* loadImage(const char* path);
+    void biltSurface(SDL_Surface* newSurface);
     int quit();
     
     
