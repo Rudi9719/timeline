@@ -10,6 +10,8 @@
 
 bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
 
+
+// Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
     this -> height = h;
     this -> width = w;
@@ -21,6 +23,8 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     
 }
 
+
+// Loads an image from path and returns surface
 SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
     SDL_Surface* imageSurface = IMG_Load(path);
     if (imageSurface == NULL) {
@@ -30,13 +34,16 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
     
     return imageSurface;
 }
+
+// Quits and closes libraries
 int SDL_Wrapper::quit(){
-    
+    IMG_Quit();
     SDL_DestroyWindow(this -> mainWindow);
     SDL_Quit();
     return 0;
 }
 
+// Check if window can open and populates
 bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
     // Initialization! :D
     if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {

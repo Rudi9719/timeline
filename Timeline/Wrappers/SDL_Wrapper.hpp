@@ -23,6 +23,7 @@ public:
     SDL_Surface* loadImage(const char* path);
     int quit();
     
+    
 private:
     int height;
     int width;
