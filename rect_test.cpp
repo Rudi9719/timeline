@@ -7,7 +7,7 @@ using namespace std;
 
 const int width = 1000;
 const int height = 800;
-const int frame_rate = 30;
+ const int frame_rate = 30; // Desired FPS
 const int card_height = 100;
 const int card_width = 80;
 
