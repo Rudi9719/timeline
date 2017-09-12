@@ -18,18 +18,18 @@
 
 class SDL_Wrapper {
 public:
-    
-    SDL_Wrapper(int h, int w);
-    SDL_Surface* loadImage(const char* path);
-    void biltSurface(SDL_Surface* newSurface);
-    int quit();
-    
-    
+
+SDL_Wrapper(int h, int w);
+SDL_Surface* loadImage(const char* path);
+void biltSurface(SDL_Surface* newSurface);
+int quit();
+
+
 private:
-    int height;
-    int width;
-    SDL_Window* mainWindow;
-    SDL_Surface* mainSurface;
+int height;
+int width;
+SDL_Window* mainWindow;
+SDL_Surface* mainSurface;
 };
 
 
