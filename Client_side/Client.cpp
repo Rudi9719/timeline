@@ -17,14 +17,15 @@ Threaded Read MSg
 
 void ReadMSG(TCPsocket sock, int & quit){
 
-char msg[MAXLEN];
+	char msg[MAXLEN];
 
-while (quit == 0)
-	{
-	SDLNet_TCP_Recv(sock, msg, MAXLEN);
-	cout << msg << endl;
-	}
-cout << "Quiting thread now" << endl;
+	while (quit == 0)
+		{
+		SDLNet_TCP_Recv(sock, msg, MAXLEN);
+		cout << msg << endl;
+		}
+	cout << "Quiting thread now" << endl;
+	
 }
 
 
@@ -55,7 +56,9 @@ int main(int argc, char **argv) {
 	
 	//Add threading here
 	thread	Readthread ( ReadMSG , tcpsock, ref(quit));
- 
+ 	
+	//While loop to get user input and send a tcp packet to the server.
+	
 	while (quit == 0)
 	{
 		cin >> Message;
