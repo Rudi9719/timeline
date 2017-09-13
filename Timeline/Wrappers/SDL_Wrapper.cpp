@@ -11,6 +11,7 @@
 bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
 
 
+
 // Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
         this->height = h;
@@ -25,6 +26,21 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
             SDL_RenderClear(mainRenderer);
         }
 
+}
+void SDL_Wrapper::displayText(const char* message, int x, int y) {
+    SDL_Color white = {255, 255, 255};
+    TTF_Font* sans = TTF_OpenFont("Sans.ttf", 30);
+    SDL_Surface* messageSurface = TTF_RenderText_Solid(sans, message, white);
+    
+    SDL_Texture* messageTexture = SDL_CreateTextureFromSurface(this -> mainRenderer, messageSurface);
+    SDL_Rect messageRect;
+    messageRect.x = x;
+    messageRect.y = y;
+    messageRect.w = (int) strlen(message) * 2;
+    messageRect.h = 35;
+    
+    SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
+    
 }
 
 SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
