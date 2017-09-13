@@ -9,14 +9,16 @@
 #include <iostream>
 #include "Wrappers/SDL_Wrapper.hpp"
 
+
 int main(int argc, const char * argv[]) {
         bool quit = false;
         SDL_Wrapper wrapper = SDL_Wrapper(900, 1000);
         SDL_Event event;
     
         while (!quit) {
+            wrapper.startFPS();
                 while (SDL_PollEvent(&event)) {
-
+                    
                         switch(event.type) {
 
                         case SDL_QUIT:
