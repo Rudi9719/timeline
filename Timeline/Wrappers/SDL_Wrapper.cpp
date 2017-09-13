@@ -40,6 +40,15 @@ void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
     
 }
 
+void SDL_Wrapper::syncFPS() {
+    this -> frame++;
+    if((this -> fpsLimiter.get_ticks() < 1000/frame_rate))
+    {
+        SDL_Delay((1000/frame_rate)-fpsLimiter.get_ticks());
+        std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
+    }
+}
+
 void SDL_Wrapper::biltSurface(SDL_Surface* newSurface) {
         SDL_BlitSurface(newSurface, NULL, mainSurface, NULL);
         SDL_UpdateWindowSurface(mainWindow);
