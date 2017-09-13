@@ -19,6 +19,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
                 if (this -> debug)
                     std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
         } else {
+            // FUCK THIS
             this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
             SDL_RenderClear(mainRenderer);
         }
