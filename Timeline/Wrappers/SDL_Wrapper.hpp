@@ -21,8 +21,7 @@
 
 class SDL_Wrapper {
 public:
-    
-    
+
     bool debug = true;
     
     

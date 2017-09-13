@@ -10,11 +10,12 @@
 #include "Wrappers/SDL_Wrapper.hpp"
 
 
+
+
 int main(int argc, const char * argv[]) {
         bool quit = false;
         SDL_Wrapper wrapper = SDL_Wrapper(900, 1000);
         SDL_Event event;
-    
         while (!quit) {
             wrapper.startFPS();
                 while (SDL_PollEvent(&event)) {
@@ -32,6 +33,9 @@ int main(int argc, const char * argv[]) {
                                         quit = true;
                                         break;
                                 }
+                            case SDLK_SPACE:
+                                wrapper.displayText("Yo mother fucker!", 100, 100);
+                                break;
                         }
 
                 }
