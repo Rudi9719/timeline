@@ -21,6 +21,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         } else {
             // FUCK THIS
             this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
+            SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
             SDL_RenderClear(mainRenderer);
         }
 
@@ -36,6 +37,11 @@ SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
     
 }
 
+void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
+    
+    SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
+    SDL_RenderFillRect(this -> mainRenderer, card);
+}
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
     card -> x = (card -> x) - xTransform;
     card -> y = (card -> y) - yTransform;
@@ -53,6 +59,7 @@ void SDL_Wrapper::syncFPS() {
         if (this -> debug)
             std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
+    SDL_RenderPresent(this -> mainRenderer);
 }
 
 

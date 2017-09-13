@@ -29,7 +29,7 @@ public:
     SDL_Wrapper(int h, int w);
     SDL_Surface* loadImage(const char* path);
     SDL_Rect* renderCard(int x, int y);
-    //void colorizeCard(SDL_Rect* card, )
+    void colorizeCard(SDL_Rect* card, int r, int g, int b);
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
     void biltSurface(SDL_Surface* newSurface);
     void syncFPS();
