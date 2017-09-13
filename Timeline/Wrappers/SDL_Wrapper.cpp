@@ -37,6 +37,9 @@ SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
     
 }
 
+
+
+
 void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
