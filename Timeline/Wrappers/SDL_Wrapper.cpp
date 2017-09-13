@@ -16,7 +16,8 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         this->height = h;
         this->width = w;
         if (!init(this->mainWindow, this->mainSurface, this->width, this->height)) {
-                std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
+                if (this -> debug)
+                    std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
         } else {
             this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
             SDL_RenderClear(mainRenderer);
@@ -45,7 +46,8 @@ void SDL_Wrapper::syncFPS() {
     if((this -> fpsLimiter.get_ticks() < 1000/frame_rate))
     {
         SDL_Delay((1000/frame_rate)-fpsLimiter.get_ticks());
-        std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
+        if (this -> debug)
+            std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
 }
 
@@ -59,7 +61,8 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
         SDL_Surface* imageSurface = IMG_Load(path);
         if (imageSurface == NULL) {
                 std::cout << "Something went wrong loading your image." << std::endl;
-                printf("Error: %s\n", SDL_GetError());
+                if (this -> debug)
+                    printf("Error: %s\n", SDL_GetError());
         }
 
         return imageSurface;

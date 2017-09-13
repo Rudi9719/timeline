@@ -123,10 +123,10 @@ public:
     
 private:
     Timer fpsLimiter;
-    int frame_rate;
+    int frame_rate = 15;
     int frame = 0;
-    int card_height;
-    int card_width;
+    int card_height = 100;
+    int card_width = 80;
     int height;
     int width;
     SDL_Surface* mainSurface;
