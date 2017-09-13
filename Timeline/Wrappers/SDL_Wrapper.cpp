@@ -18,9 +18,26 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         if (!init(this->mainWindow, this->mainSurface, this->width, this->height)) {
                 std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
         } else {
-
+            this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
+            SDL_RenderClear(mainRenderer);
         }
 
+}
+
+SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
+    SDL_Rect* r1 = nullptr;
+    r1->x = x;
+    r1->y = y;
+    r1->w = card_width;
+    r1->h = card_height;
+    return r1;
+    
+}
+
+void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
+    card -> x = (card -> x) - xTransform;
+    card -> y = (card -> y) - yTransform;
+    
 }
 
 void SDL_Wrapper::biltSurface(SDL_Surface* newSurface) {
