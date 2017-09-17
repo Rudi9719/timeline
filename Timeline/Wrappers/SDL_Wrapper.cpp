@@ -8,7 +8,6 @@
 
 #include "SDL_Wrapper.hpp"
 
-bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
 
 // Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
@@ -20,8 +19,14 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
                     std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
         } else {
             // FUCK THIS
+            
             TTF_Init();
             this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
+            if (!(mainRenderer)) {
+                printf("Main Renderer not initialized!!!!\n");
+                SDL_Delay(5);
+                printf("%s", SDL_GetError());
+            }
             SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
             SDL_RenderClear(mainRenderer);
             SDL_RenderPresent(mainRenderer);
@@ -122,7 +127,7 @@ int SDL_Wrapper::quit(){
 }
 
 // Check if window can open and populates
-bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
+bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
         // Initialization! :D
         if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {
                 return false;
@@ -135,10 +140,9 @@ bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height)
                         return false;
                 } else {
                         // Get the window surface
-                        screenSurface = SDL_GetWindowSurface(window);
                         // Update the surface
-                        SDL_UpdateWindowSurface(window);
-                        return true;
+                    this -> mainWindow = window;
+                    return true;
                 }
         }
 

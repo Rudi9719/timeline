@@ -53,6 +53,8 @@ private:
     SDL_Window* mainWindow = NULL;
     SDL_Renderer* mainRenderer = NULL;
     
+    bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
+    
     
 };
 
