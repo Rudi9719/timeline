@@ -73,12 +73,13 @@ void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
+    SDL_RenderPresent(this -> mainRenderer);
 }
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
     SDL_ClearError();
     card -> x = (card -> x) - xTransform;
     card -> y = (card -> y) - yTransform;
-    
+    SDL_RenderPresent(this -> mainRenderer);
 }
 
 void SDL_Wrapper::startFPS() {
@@ -93,14 +94,10 @@ void SDL_Wrapper::syncFPS() {
         if (this -> debug)
             std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
-    SDL_RenderPresent(this -> mainRenderer);
+    
 }
 
 
-void SDL_Wrapper::biltSurface(SDL_Surface* newSurface) {
-    SDL_BlitSurface(newSurface, NULL, mainSurface, NULL);
-    SDL_UpdateWindowSurface(mainWindow);
-}
 
 // Loads an image from path and returns surface
 SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
@@ -119,6 +116,8 @@ int SDL_Wrapper::quit(){
     IMG_Quit();
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
+    TTF_Quit();
+    SDL_DestroyRenderer(this -> mainRenderer);
     return 0;
 }
 

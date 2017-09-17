@@ -32,7 +32,6 @@ public:
     void displayText(const char* message, int x, int y, int h);
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
-    void biltSurface(SDL_Surface* newSurface);
     void syncFPS();
     void startFPS();
     
