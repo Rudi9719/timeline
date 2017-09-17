@@ -27,7 +27,7 @@ public:
     
     SDL_Wrapper(int h, int w);
     SDL_Surface* loadImage(const char* path);
-    SDL_Rect* renderCard(int x, int y);
+    SDL_Rect renderCard(int x, int y);
     
     void displayText(const char* message, int x, int y);
     void colorizeCard(SDL_Rect* card, int r, int g, int b);

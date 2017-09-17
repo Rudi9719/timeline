@@ -16,10 +16,14 @@ int main(int argc, const char * argv[]) {
         bool quit = false;
         SDL_Wrapper wrapper = SDL_Wrapper(900, 1000);
         SDL_Event event;
+
+        SDL_Rect card1 = wrapper.renderCard(100, 100);
+
+
         while (!quit) {
             wrapper.startFPS();
                 while (SDL_PollEvent(&event)) {
-                    
+
                         switch(event.type) {
 
                         case SDL_QUIT:

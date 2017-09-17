@@ -12,6 +12,7 @@ bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height)
 
 // Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
+    SDL_ClearError();
         this->height = h;
         this->width = w;
         if (!init(this->mainWindow, this->mainSurface, this->width, this->height)) {
@@ -29,6 +30,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
 
 }
 void SDL_Wrapper::displayText(const char* message, int x, int y) {
+    SDL_ClearError();
     SDL_Color white = {255, 255, 255};
     TTF_Font* sans = TTF_OpenFont("assets/Sans.ttf", 30);
     SDL_Surface* messageSurface = TTF_RenderText_Solid(sans, message, white);
@@ -41,16 +43,25 @@ void SDL_Wrapper::displayText(const char* message, int x, int y) {
     
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
     SDL_RenderPresent(this -> mainRenderer);
+    if (this -> debug)
+        printf("Error: %s\n", SDL_GetError());
     
 }
 
-SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
-    SDL_Rect* r1 = nullptr;
-    r1->x = x;
-    r1->y = y;
-    r1->w = card_width;
-    r1->h = card_height;
+SDL_Rect SDL_Wrapper::renderCard(int x, int y) {
+    SDL_ClearError();
+    SDL_Rect r1;
+    r1.x = x;
+    r1.y = y;
+    r1.w = card_width;
+    r1.h = card_height;
+    SDL_SetRenderDrawColor( this -> mainRenderer, 200, 200, 200,255);
+    SDL_RenderFillRect(this -> mainRenderer, &r1);
+    SDL_RenderPresent(this -> mainRenderer);
+    if (this -> debug)
+        printf("Error: %s\n", SDL_GetError());
     return r1;
+    
     
 }
 
@@ -58,17 +69,19 @@ SDL_Rect* SDL_Wrapper::renderCard(int x, int y) {
 
 
 void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
-    
+    SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
 }
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
+    SDL_ClearError();
     card -> x = (card -> x) - xTransform;
     card -> y = (card -> y) - yTransform;
     
 }
 
 void SDL_Wrapper::startFPS() {
+    
     this -> fpsLimiter.start();
 }
 void SDL_Wrapper::syncFPS() {
@@ -76,8 +89,8 @@ void SDL_Wrapper::syncFPS() {
     if((this -> fpsLimiter.get_ticks() < 1000/frame_rate))
     {
         SDL_Delay((1000/frame_rate)-fpsLimiter.get_ticks());
-        if (this -> debug)
-            std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
+        //if (this -> debug)
+            //std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
     SDL_RenderPresent(this -> mainRenderer);
 }
