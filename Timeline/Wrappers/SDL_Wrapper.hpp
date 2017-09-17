@@ -29,7 +29,7 @@ public:
     SDL_Surface* loadImage(const char* path);
     SDL_Rect renderCard(int x, int y);
     
-    void displayText(const char* message, int x, int y);
+    void displayText(const char* message, int x, int y, int h);
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
     void biltSurface(SDL_Surface* newSurface);
