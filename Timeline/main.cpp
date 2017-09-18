@@ -13,27 +13,27 @@
 
 
 int main(int argc, const char * argv[]) {
-        bool quit = false;
+    
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
     
         
 
-        while (!quit) {
+        while (!wrapper.quit) {
             wrapper.startFPS();
                 while (SDL_PollEvent(&event)) {
 
                         switch(event.type) {
 
                         case SDL_QUIT:
-                                quit = true;
+                                wrapper.quit = true;
                                 break;
 
                         case SDL_KEYDOWN:
                                 switch (event.key.keysym.sym) {
 
                                 case SDLK_ESCAPE:
-                                        quit = true;
+                                        wrapper.quit = true;
                                         break;
                                 }
                             case SDLK_SPACE:
@@ -45,5 +45,5 @@ int main(int argc, const char * argv[]) {
             wrapper.syncFPS();
         }
 
-        return wrapper.quit();
+        return wrapper.teardown();
 }

@@ -13,6 +13,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_net/SDL_net.h>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -22,12 +23,17 @@
 class SDL_Wrapper {
 public:
 
+    bool quit = false;
     bool debug = true;
-    
+    int clients = 0;
     
     SDL_Wrapper(int h, int w);
     SDL_Surface* loadImage(const char* path);
     SDL_Rect renderCard(int x, int y);
+    
+    bool allowConnections(TCPsocket sock);
+    
+    char* netSync();
     
     void displayText(const char* message, int x, int y, int h);
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
@@ -35,7 +41,7 @@ public:
     void syncFPS();
     void startFPS();
     
-    int quit();
+    int teardown();
     
 
 private:
@@ -47,6 +53,14 @@ private:
     int card_width = 80;
     int height = 0;
     int width = 0;
+    
+    int activity = 0;
+    IPaddress* ip;
+    int NET_MAXLEN = 1024;
+    
+    SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
+    TCPsocket Server_socket;
+    TCPsocket client_sock[5];
     
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;

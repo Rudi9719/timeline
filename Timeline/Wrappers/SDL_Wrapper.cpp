@@ -20,6 +20,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     } else {
         
         TTF_Init();
+        SDLNet_Init();
         this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
         
         SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
@@ -48,6 +49,52 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
         printf("Error: %s\n", SDL_GetError());
     
 }
+
+bool SDL_Wrapper::allowConnections(TCPsocket sock) {
+    if (this -> client_sock != NULL) {
+        if (this -> clients <= 5) {
+            SDLNet_TCP_AddSocket(this -> socket, sock);
+            this -> client_sock[clients] = sock;
+            clients++;
+            SDLNet_TCP_Send(sock, "WELCOME!", 8);
+            return true;
+            
+        } else {
+            SDLNet_TCP_Send(sock, "NO_ROOM", 8);
+            SDLNet_TCP_Close(sock);
+        }
+    }
+    return false;
+}
+char* SDL_Wrapper::netSync() {
+    char* message = NULL;
+    while (SDLNet_CheckSockets(socket, 0) > 0) {
+        for (int i = 0; i < this -> clients; i++) {
+            if (SDLNet_SocketReady(client_sock[i])) {
+                SDLNet_TCP_Recv(client_sock[i], message, this-> NET_MAXLEN);
+                
+                if (strcmp(message, "quit") || strcmp(message,"shutdown")) {
+                    // delete socket of client and open it up to new client
+                    if (strcmp(message, "shutdown")) {
+                        this -> quit = true;
+                    }
+                }
+                else
+                {
+                    //send all data recieve from client I to all clients except I
+                    for (int k = 0; k < this -> clients; k++) {
+                        if (k != i) {
+                            SDLNet_TCP_Send(client_sock[k], message, strlen(message) + 1);
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    return message;
+}
+
 
 SDL_Rect SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
@@ -112,11 +159,14 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
 }
 
 // Quits and closes libraries
-int SDL_Wrapper::quit(){
+int SDL_Wrapper::teardown(){
     IMG_Quit();
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
+    SDLNet_TCP_Close(this -> Server_socket);
+    SDLNet_FreeSocketSet(this -> socket);
+    SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
     return 0;
 }
