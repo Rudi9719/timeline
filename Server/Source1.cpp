@@ -45,8 +45,9 @@ int main(int argc, char **argv) {
 			if (Clients <= 5) {
 				SDLNet_TCP_AddSocket(socket, temp);
 				client_sock[Clients] = temp;
-				Clients++;
-				SDLNet_TCP_Send(temp, "Welcome", 7);
+				Clients++; 
+				temp_char[0] = Clients;
+				SDLNet_TCP_Send(temp, temp_char, 7);
 				cout << "New Connections \n";
 			}
 			else
