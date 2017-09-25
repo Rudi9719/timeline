@@ -21,6 +21,8 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         
         TTF_Init();
         SDLNet_Init();
+
+
         this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
         
         SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
