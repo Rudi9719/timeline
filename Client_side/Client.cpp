@@ -6,6 +6,7 @@
 #include<thread> 
 #include<ctime>
 #include<string>
+#include<sstream>
 
 #define MAXLEN 1024
 
@@ -61,12 +62,12 @@ int main(int argc, char **argv) {
 
 	tcpsock = SDLNet_TCP_Open(&Server_IP);
 	*/
-
+	cin >> quit;
 
 	SDLNet_ResolveHost(&Server_IP, "127.0.0.1", 2560);
 	tcpsock = SDLNet_TCP_Open(&Server_IP);
 	SDLNet_TCP_AddSocket(Client_set, tcpsock);
-
+	cout << "Started" << endl;
 	//Add threading here
 	//thread	Readthread ( ReadMSG , tcpsock, ref(quit));
 	SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
@@ -97,7 +98,7 @@ int main(int argc, char **argv) {
 			SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
 			cout << Msg;
 			can_send = 0;
-			if (strcmp(Msg, "quit")) {
+			if (strcmp(Msg, "quit")== 0) {
 				quit = 1;
 			}
 
