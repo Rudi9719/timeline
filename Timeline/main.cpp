@@ -9,7 +9,11 @@
 #include <iostream>
 #include "Wrappers/SDL_Wrapper.hpp"
 
+int main(int argc, const char * argv[]);
 
+int WinMain(int argc, const char* argv[]) {
+    return main(argc, argv);
+}
 
 
 int main(int argc, const char * argv[]) {

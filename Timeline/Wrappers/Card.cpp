@@ -8,49 +8,45 @@
 
 #include "Card.hpp"
 
+
+
 Card::Card()
 {
     this -> cardtype = -1;
     column = -1;
     y = -1;
-    for (int i = 0; i > this -> paths.size();i++) {
-       this -> paths.insert(-1); // give paths placer values
+    for (int i = 0; i > 4; i++) {
+       this -> paths[i] = -1; // give paths placer values
     }
-    for (int i = 0; i > this -> comtaken.size();i++) {
-        this -> comtaken.insert(false); // gives commodity bools placer values
+    for (int i = 0; i > 4;i++) {
+        this -> comtaken[i] = false; // gives commodity bools placer values
     }
-    for (int i = 0; i > this -> comtype.size();i++) {
-        this -> comtype.insert(-1); // gives comtypes placer values
+    for (int i = 0; i > 4;i++) {
+        this -> comtype[i] = -1; // gives comtypes placer values
     }
 }
-int getCardType()
+int Card::getCardType()
 {
     return cardtype;
 }
-void setCardType(int _cardtype)
+void Card::setCardType(int _cardtype)
 {
     this -> cardtype = _cardtype;
 }
-void setY(int _y) {
+void Card::setY(int _y) {
     y = _y;
 }
-vector<int> getPaths() {
-    return paths;
+int* Card::getPaths() {
+    return this -> paths;
 }
-void setPaths(vector<int> _v) {
-    // Totally wipes current object's path tree
-    this.paths.erase(this.paths.begin(),this.paths.end());
-    // Replaces it with the values of the passed vector
-    for( int i = 0;i<this.paths.size(); i++) {
-        this.paths.insert(_v[i]); // the magic line...
-    }
+
+
+int Card::getColumn() {
+    return this -> column;
 }
-int getColumn() {
-    return this.column;
+int* Card::getComType() {
+    return this -> comtype;
 }
-vector<int> getComType() {
-    return comtype;
-}
-vector<bool> getComTaken() {
-    return comtaken;
+bool* Card::getComTaken() {
+    return this -> comtaken;
 }
