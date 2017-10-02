@@ -22,26 +22,45 @@
 
 class SDL_Wrapper {
 public:
-
+    // Should the screen refresh (redraw)
     bool refreshScreen = false;
+    // Should the program quit
     bool quit = false;
+    // Is the program in debugging mode
     bool debug = true;
     int clients = 0;
     
+    // Create a SDL Wrapper with height/width of window
     SDL_Wrapper(int h, int w);
+    
+    // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
+    // Render a card TODO: Return a card class instead of SDL_Rect
     SDL_Rect renderCard(int x, int y);
     
+    // Should the program allow connections
     bool allowConnections(TCPsocket sock);
     
+    // NetSync message
     char* netSync();
+    // Handle click at (X, Y)
     void handleClick(int x, int y);
+    // Display message at x, y, with a height of h
     void displayText(const char* message, int x, int y, int h);
+    // set a SDL_Rect's colour based on RGB
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
-    void moveCard(int xTransform, int yTransform, SDL_Rect* card);
-    void syncFPS();
-    void startFPS();
     
+    // Move card by xTransform and yTransform NOT TO (x, y)
+    void moveCard(int xTransform, int yTransform, SDL_Rect* card);
+    // Snyc FPS
+    void syncFPS();
+    
+    
+    
+    
+    // Start FPS Called Automatically.
+    void startFPS();
+    // Close the program down and return the error/ok status
     int teardown();
     
 

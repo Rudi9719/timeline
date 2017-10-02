@@ -28,6 +28,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderPresent(mainRenderer);
         
     }
+    this -> startFPS();
     
 }
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {

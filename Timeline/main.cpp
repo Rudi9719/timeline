@@ -24,7 +24,6 @@ int main(int argc, const char * argv[]) {
         
 
         while (!wrapper.quit) {
-            wrapper.startFPS();
                 while (SDL_PollEvent(&event)) {
 
                         switch(event.type) {
