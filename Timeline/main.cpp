@@ -43,11 +43,18 @@ int main(int argc, const char * argv[]) {
                             case SDLK_SPACE:
                                 wrapper.displayText("Yo mother fucker!", 400, 500, 40);
                                 break;
+                            case SDL_MOUSEBUTTONDOWN:
+                                if (event.button.button == SDL_BUTTON_LEFT) {
+                                    int x = event.button.x;
+                                    int y = event.button.y;
+                                    wrapper.handleClick(x, y);
+                                    
+                                }
                         }
-
                 }
+                
             wrapper.syncFPS();
         }
-
-        return wrapper.teardown();
+    std::cout << wrapper.teardown() << std::endl;
+    return 0;
 }

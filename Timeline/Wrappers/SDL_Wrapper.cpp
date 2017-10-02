@@ -44,7 +44,8 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     messageRect.h = height;
     
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
-    SDL_RenderPresent(this -> mainRenderer);
+    this -> refreshScreen = true;
+    
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
     
@@ -92,22 +93,25 @@ char* SDL_Wrapper::netSync() {
         }
         
     }
+    this -> refreshScreen = true;
     return message;
 }
-
+void SDL_Wrapper::handleClick(int x, int y) {
+    renderCard(x, y);
+}
 
 SDL_Rect SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
     SDL_Rect r1;
-    r1.x = x;
-    r1.y = y;
+    r1.x = x - 40;
+    r1.y = y - 50;
     r1.w = card_width;
     r1.h = card_height;
     SDL_SetRenderDrawColor( this -> mainRenderer, 200, 200, 200,255);
     SDL_RenderFillRect(this -> mainRenderer, &r1);
-    SDL_RenderPresent(this -> mainRenderer);
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
+    this -> refreshScreen = true;
     return r1;
     
     
@@ -120,13 +124,13 @@ void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
-    SDL_RenderPresent(this -> mainRenderer);
+    this -> refreshScreen = true;
 }
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
     SDL_ClearError();
     card -> x = (card -> x) - xTransform;
     card -> y = (card -> y) - yTransform;
-    SDL_RenderPresent(this -> mainRenderer);
+    this -> refreshScreen = true;
 }
 
 void SDL_Wrapper::startFPS() {
@@ -141,7 +145,10 @@ void SDL_Wrapper::syncFPS() {
         if (this -> debug)
             std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
-    
+    if (this -> refreshScreen) {
+        SDL_RenderPresent(this -> mainRenderer);
+        this -> refreshScreen = false;
+    }
 }
 
 

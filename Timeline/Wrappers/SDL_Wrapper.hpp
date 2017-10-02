@@ -23,6 +23,7 @@
 class SDL_Wrapper {
 public:
 
+    bool refreshScreen = false;
     bool quit = false;
     bool debug = true;
     int clients = 0;
@@ -34,7 +35,7 @@ public:
     bool allowConnections(TCPsocket sock);
     
     char* netSync();
-    
+    void handleClick(int x, int y);
     void displayText(const char* message, int x, int y, int h);
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
