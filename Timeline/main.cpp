@@ -56,8 +56,8 @@ int main(int argc, const char * argv[]) {
                         } // End switch on event.type
 
                 } // End Poll event loop
-            SDL_FlushEvent(event.type);
             wrapper.syncFPS();
+            wrapper.refreshScreen = true;
             
         } // End main loop
     std::cout << wrapper.teardown() << std::endl;

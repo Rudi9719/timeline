@@ -72,7 +72,7 @@ private:
     
     std::vector<Card> placedCards;
     Timer fpsLimiter;
-    int frame_rate = 60;
+    int frame_rate = 1;
     int frame = 0;
     int card_height = 100;
     int card_width = 80;
