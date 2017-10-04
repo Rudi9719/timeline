@@ -123,7 +123,7 @@ void SDL_Wrapper::handleClick(int x, int y) {
     for(Card card : placedCards) {
         std::cout << "Card" << std::endl;
         if (card.cardButton.ownsClick(x, y)) {
-            std::printf("Card clicked!");
+            std::printf("Card clicked!\n");
             return;
         }
     }
@@ -179,8 +179,6 @@ void SDL_Wrapper::syncFPS() {
             std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
     if (this -> refreshScreen) {
-        SDL_RenderPresent(this -> mainRenderer);
-        SDL_RenderPresent(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
         this -> refreshScreen = false;
     }
