@@ -17,6 +17,8 @@ class Deck {
 public:
     Deck(std::vector<Card> cards);
     std::vector<Card>* deck;
+    Card* drawCard();
+    
     
 private:
     std::vector<Card> unshuffled;
