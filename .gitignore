@@ -6,7 +6,7 @@
 *.lo
 *.o
 *.obj
-
+Timeline/build/*
 # Precompiled Headers
 *.gch
 *.pch
