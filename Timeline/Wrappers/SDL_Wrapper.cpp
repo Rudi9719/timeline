@@ -28,6 +28,9 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderPresent(mainRenderer);
         
     }
+    SDL_Rect rect = this -> renderCard(width - 25, 0);
+    this -> colorizeCard(&rect, 247, 132, 0);
+    this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
     
 }
@@ -37,6 +40,25 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     SDL_Color white = {255, 255, 255};
     TTF_Font* sans = TTF_OpenFont("assets/Sans.ttf", height);
     SDL_Surface* messageSurface = TTF_RenderText_Solid(sans, message, white);
+    SDL_Texture* messageTexture = SDL_CreateTextureFromSurface(this -> mainRenderer, messageSurface);
+    SDL_Rect messageRect;
+    messageRect.x = x;
+    messageRect.y = y;
+    messageRect.w = ((int) strlen(message) * (height / 2));
+    messageRect.h = height;
+    
+    SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
+    this -> refreshScreen = true;
+    
+    if (this -> debug)
+        printf("Error: %s\n", SDL_GetError());
+    
+}
+void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Color c) {
+    SDL_ClearError();
+    int height = h;
+    TTF_Font* sans = TTF_OpenFont("assets/Sans.ttf", height);
+    SDL_Surface* messageSurface = TTF_RenderText_Solid(sans, message, c);
     SDL_Texture* messageTexture = SDL_CreateTextureFromSurface(this -> mainRenderer, messageSurface);
     SDL_Rect messageRect;
     messageRect.x = x;
@@ -147,6 +169,8 @@ void SDL_Wrapper::syncFPS() {
             std::cout << "delaying for " << (1000/frame_rate)- fpsLimiter.get_ticks() << " ms" << std::endl;
     }
     if (this -> refreshScreen) {
+        SDL_RenderPresent(this -> mainRenderer);
+        SDL_RenderPresent(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
         this -> refreshScreen = false;
     }

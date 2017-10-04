@@ -47,6 +47,7 @@ public:
     void handleClick(int x, int y);
     // Display message at x, y, with a height of h
     void displayText(const char* message, int x, int y, int h);
+    void displayText(const char* message, int x, int y, int h, SDL_Color c);
     // set a SDL_Rect's colour based on RGB
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
     

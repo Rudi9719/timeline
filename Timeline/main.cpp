@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
     
-        
+       
 
         while (!wrapper.quit) {
                 while (SDL_PollEvent(&event)) {
@@ -38,22 +38,35 @@ int main(int argc, const char * argv[]) {
                                 case SDLK_ESCAPE:
                                         wrapper.quit = true;
                                         break;
+                                
+                                case SDLK_SPACE:
+                                        wrapper.displayText("Yo mother fucker!", 400, 500, 40);
+                                        break;
+                                
                                 }
-                            case SDLK_SPACE:
-                                wrapper.displayText("Yo mother fucker!", 400, 500, 40);
-                                break;
-                            case SDL_MOUSEBUTTONDOWN:
-                                if (event.button.button == SDL_BUTTON_LEFT) {
-                                    int x = event.button.x;
-                                    int y = event.button.y;
-                                    wrapper.handleClick(x, y);
+                                case SDL_MOUSEBUTTONDOWN:
+                                        if (event.button.button == SDL_BUTTON_LEFT) {
+                                            int x = event.button.x;
+                                            int y = event.button.y;
+                                            wrapper.handleClick(x, y);
                                     
-                                }
-                        }
+                                        }
+                                        break;
+                                
+                        } // End switch on event.type
+
+                } // End Poll event loop
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    int x = event.button.x;
+                    int y = event.button.y;
+                    wrapper.handleClick(x, y);
+                    
                 }
-                
+            }
             wrapper.syncFPS();
-        }
+            
+        } // End main loop
     std::cout << wrapper.teardown() << std::endl;
     return 0;
 }
