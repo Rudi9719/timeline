@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
        
 
         while (!wrapper.quit) {
-                while (SDL_PollEvent(&event)) {
+                while (SDL_WaitEventTimeout(&event, 0.2)) {
 
                         switch(event.type) {
 
@@ -43,7 +43,7 @@ int main(int argc, const char * argv[]) {
                                         wrapper.displayText("Yo mother fucker!", 400, 500, 40);
                                         break;
                                 
-                                }
+                                } // End switch on key
                                 case SDL_MOUSEBUTTONDOWN:
                                         if (event.button.button == SDL_BUTTON_LEFT) {
                                             int x = event.button.x;
@@ -56,14 +56,7 @@ int main(int argc, const char * argv[]) {
                         } // End switch on event.type
 
                 } // End Poll event loop
-            if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (event.button.button == SDL_BUTTON_LEFT) {
-                    int x = event.button.x;
-                    int y = event.button.y;
-                    wrapper.handleClick(x, y);
-                    
-                }
-            }
+
             wrapper.syncFPS();
             
         } // End main loop

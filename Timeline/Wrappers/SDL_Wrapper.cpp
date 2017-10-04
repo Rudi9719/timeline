@@ -28,8 +28,8 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderPresent(mainRenderer);
         
     }
-    SDL_Rect rect = this -> renderCard(width - 25, 0);
-    this -> colorizeCard(&rect, 247, 132, 0);
+    Card helpCard = this -> renderCard(width - 25, 0);
+    this -> colorizeCard(&helpCard.cardRect, 247, 132, 0);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
     
@@ -120,22 +120,32 @@ char* SDL_Wrapper::netSync() {
     return message;
 }
 void SDL_Wrapper::handleClick(int x, int y) {
+    for(Card card : placedCards) {
+        std::cout << "Card" << std::endl;
+        if (card.cardButton.ownsClick(x, y)) {
+            std::printf("Card clicked!");
+            return;
+        }
+    }
     renderCard(x, y);
 }
 
-SDL_Rect SDL_Wrapper::renderCard(int x, int y) {
+Card SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
+    
     SDL_Rect r1;
-    r1.x = x - 40;
-    r1.y = y - 50;
+    r1.x = x - this -> card_width / 2;
+    r1.y = y - this -> card_height / 2;
     r1.w = card_width;
     r1.h = card_height;
+    Card c = Card(r1);
     SDL_SetRenderDrawColor( this -> mainRenderer, 200, 200, 200,255);
     SDL_RenderFillRect(this -> mainRenderer, &r1);
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
     this -> refreshScreen = true;
-    return r1;
+    this -> placedCards.push_back(c);
+    return c;
     
     
 }

@@ -10,11 +10,12 @@
 
 
 
-Card::Card()
+Card::Card(SDL_Rect rect)
 {
+    
+    this -> cardButton = UIButton(rect);
     this -> cardtype = -1;
     column = -1;
-    y = -1;
     for (int i = 0; i > 4; i++) {
        this -> paths[i] = -1; // give paths placer values
     }
@@ -24,6 +25,7 @@ Card::Card()
     for (int i = 0; i > 4;i++) {
         this -> comtype[i] = -1; // gives comtypes placer values
     }
+    this -> cardRect = rect;
 }
 int Card::getCardType()
 {
@@ -33,9 +35,7 @@ void Card::setCardType(int _cardtype)
 {
     this -> cardtype = _cardtype;
 }
-void Card::setY(int _y) {
-    y = _y;
-}
+
 int* Card::getPaths() {
     return this -> paths;
 }

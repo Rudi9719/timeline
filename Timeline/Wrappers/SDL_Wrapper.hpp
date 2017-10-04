@@ -16,7 +16,9 @@
 #include <SDL2/SDL_net.h>
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 #include <string>
+#include "Card.hpp"
 #include "Timer.hpp"
 
 
@@ -36,7 +38,7 @@ public:
     // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
     // Render a card TODO: Return a card class instead of SDL_Rect
-    SDL_Rect renderCard(int x, int y);
+    Card renderCard(int x, int y);
     
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);
@@ -67,6 +69,7 @@ public:
 
 private:
     
+    std::vector<Card> placedCards;
     Timer fpsLimiter;
     int frame_rate = 15;
     int frame = 0;

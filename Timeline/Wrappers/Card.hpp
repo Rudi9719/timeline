@@ -10,24 +10,24 @@
 #define Card_hpp
 
 #include <vector>
-
+#include "UIButton.hpp"
 
 class Card
 {
 private:
     int cardtype;
     int column;
-    int y;
     int paths[4];
     bool comtaken[4];
     int comtype[4];
+
     
 public:
-    Card();
+    UIButton cardButton;
+    SDL_Rect cardRect;
+    Card(SDL_Rect rect);
     int getCardType();
     void setCardType(int);
-    int getY();
-    void setY(int);
     int* getPaths();
     int getColumn();
     int* getComType();
