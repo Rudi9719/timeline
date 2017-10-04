@@ -28,9 +28,10 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderPresent(this -> mainRenderer);
         
     }
+    
     Card* helpCard = this -> renderCard(width - 25, 0);
     helpCard -> setCardType(9);
-    this -> colorizeCard(cardRect, 247, 132, 0);
+    this -> colorizeCard(helpCard, 247132000);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
     
@@ -159,6 +160,30 @@ void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
+    this -> refreshScreen = true;
+}
+void SDL_Wrapper::colorizeCard(Card* card, int r, int g , int b) {
+    SDL_ClearError();
+    SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
+    SDL_RenderFillRect(this -> mainRenderer, &card -> cardRect);
+    this -> refreshScreen = true;
+}
+void SDL_Wrapper::colorizeCard(Card* card, int preset) {
+    int r = 0;
+    int b = 0;
+    int g = 0;
+    switch(preset) {
+        case 247132000:
+            r = 247;
+            b = 132;
+            g = 0;
+            break;
+        default:
+            break;
+    }
+    SDL_ClearError();
+    SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
+    SDL_RenderFillRect(this -> mainRenderer, &card-> cardRect);
     this -> refreshScreen = true;
 }
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {

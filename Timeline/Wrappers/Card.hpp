@@ -15,6 +15,7 @@
 class Card
 {
 private:
+    int deckPosition;
     int cardtype = 0;
     int column;
     int paths[4];

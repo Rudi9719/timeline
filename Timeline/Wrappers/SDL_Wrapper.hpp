@@ -52,7 +52,8 @@ public:
     void displayText(const char* message, int x, int y, int h, SDL_Color c);
     // set a SDL_Rect's colour based on RGB
     void colorizeCard(SDL_Rect* card, int r, int g, int b);
-    
+    void colorizeCard(Card* card, int r, int g, int b);
+    void colorizeCard(Card* card, int preset);
     // Move card by xTransform and yTransform NOT TO (x, y)
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
     // Snyc FPS
@@ -71,7 +72,7 @@ private:
     
     std::vector<Card> placedCards;
     Timer fpsLimiter;
-    int frame_rate = 15;
+    int frame_rate = 60;
     int frame = 0;
     int card_height = 100;
     int card_width = 80;
