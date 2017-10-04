@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
-#include "Card.hpp"
-#include "Timer.hpp"
+#include "../Classes/Card.hpp"
+#include "../Classes/Timer.hpp"
 
 
 class SDL_Wrapper {
