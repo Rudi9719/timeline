@@ -39,7 +39,18 @@ void Card::setCardType(int _cardtype)
 int* Card::getPaths() {
     return this -> paths;
 }
-
+void Card::handleClick(int x, int y) {
+    switch (this -> getCardType()) {
+        case 9:
+            printf("Help card clicked.\n");
+            system("open http://cheapass.com//wp-content/uploads/2016/07/TIMELINE-RULES.pdf");
+            break;
+        default:
+            printf("Undefined card type, %d clicked.\n", this -> getCardType());
+            break;
+        
+    }
+}
 
 int Card::getColumn() {
     return this -> column;

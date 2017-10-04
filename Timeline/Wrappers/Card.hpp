@@ -15,14 +15,17 @@
 class Card
 {
 private:
-    int cardtype;
+    int cardtype = 0;
     int column;
     int paths[4];
     bool comtaken[4];
     int comtype[4];
-
+    
     
 public:
+    char* cardName;
+    
+    void handleClick(int x, int y);
     UIButton cardButton;
     SDL_Rect cardRect;
     Card(SDL_Rect rect);

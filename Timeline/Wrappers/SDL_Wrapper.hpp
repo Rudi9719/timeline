@@ -38,7 +38,7 @@ public:
     // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
     // Render a card TODO: Return a card class instead of SDL_Rect
-    Card renderCard(int x, int y);
+    Card* renderCard(int x, int y);
     
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);

@@ -24,7 +24,7 @@ int main(int argc, const char * argv[]) {
        
 
         while (!wrapper.quit) {
-                while (SDL_WaitEventTimeout(&event, 0.2)) {
+                while (SDL_WaitEventTimeout(&event, 4)) {
 
                         switch(event.type) {
 
@@ -56,7 +56,7 @@ int main(int argc, const char * argv[]) {
                         } // End switch on event.type
 
                 } // End Poll event loop
-
+            SDL_FlushEvent(event.type);
             wrapper.syncFPS();
             
         } // End main loop

@@ -23,13 +23,14 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDLNet_Init();
         this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
         
-        SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, 255);
-        SDL_RenderClear(mainRenderer);
-        SDL_RenderPresent(mainRenderer);
+        SDL_SetRenderDrawColor(this -> mainRenderer, 0, 0, 0, 255);
+        SDL_RenderClear(this -> mainRenderer);
+        SDL_RenderPresent(this -> mainRenderer);
         
     }
-    Card helpCard = this -> renderCard(width - 25, 0);
-    this -> colorizeCard(&helpCard.cardRect, 247, 132, 0);
+    Card* helpCard = this -> renderCard(width - 25, 0);
+    helpCard -> setCardType(9);
+    this -> colorizeCard(cardRect, 247, 132, 0);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
     
@@ -121,16 +122,17 @@ char* SDL_Wrapper::netSync() {
 }
 void SDL_Wrapper::handleClick(int x, int y) {
     for(Card card : placedCards) {
-        std::cout << "Card" << std::endl;
+        std::cout << card.getCardType() << std::endl;
         if (card.cardButton.ownsClick(x, y)) {
-            std::printf("Card clicked!\n");
+            card.handleClick(x, y);
             return;
         }
     }
-    renderCard(x, y);
+    Card* newCard = renderCard(x, y);
+    newCard -> setCardType(0);
 }
 
-Card SDL_Wrapper::renderCard(int x, int y) {
+Card* SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
     
     SDL_Rect r1;
@@ -142,10 +144,10 @@ Card SDL_Wrapper::renderCard(int x, int y) {
     SDL_SetRenderDrawColor( this -> mainRenderer, 200, 200, 200,255);
     SDL_RenderFillRect(this -> mainRenderer, &r1);
     if (this -> debug)
-        printf("Error: %s\n", SDL_GetError());
+        printf("%s\n", SDL_GetError());
     this -> refreshScreen = true;
     this -> placedCards.push_back(c);
-    return c;
+    return &c;
     
     
 }
@@ -192,7 +194,7 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
     if (imageSurface == NULL) {
         std::cout << "Something went wrong loading your image." << std::endl;
         if (this -> debug)
-            printf("Error: %s\n", SDL_GetError());
+            printf("%s\n", SDL_GetError());
     }
     
     return imageSurface;
