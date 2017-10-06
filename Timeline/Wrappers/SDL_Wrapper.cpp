@@ -123,7 +123,6 @@ char* SDL_Wrapper::netSync() {
 }
 void SDL_Wrapper::handleClick(int x, int y) {
     for(Card card : placedCards) {
-        std::cout << card.getCardType() << std::endl;
         if (card.cardButton.ownsClick(x, y)) {
             card.handleClick(x, y);
             return;
@@ -231,7 +230,7 @@ int SDL_Wrapper::teardown(){
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
-    SDLNet_TCP_Close(this -> Server_socket);
+    //SDLNet_TCP_Close(this -> Server_socket);
     SDLNet_FreeSocketSet(this -> socket);
     SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
