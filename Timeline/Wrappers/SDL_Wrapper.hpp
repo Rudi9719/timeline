@@ -86,7 +86,7 @@ private:
     SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
     TCPsocket Server_socket;
     TCPsocket client_sock[5];
-    
+    void reDrawCards();
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;
     SDL_Renderer* mainRenderer = NULL;

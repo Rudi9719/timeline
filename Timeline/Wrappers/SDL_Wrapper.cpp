@@ -77,7 +77,7 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
 }
 
 bool SDL_Wrapper::allowConnections(TCPsocket sock) {
-    if (this -> client_sock != NULL) {
+    if (this -> client_sock[0] != NULL) {
         if (this -> clients <= 5) {
             SDLNet_TCP_AddSocket(this -> socket, sock);
             this -> client_sock[clients] = sock;
@@ -110,7 +110,7 @@ char* SDL_Wrapper::netSync() {
                     //send all data recieve from client I to all clients except I
                     for (int k = 0; k < this -> clients; k++) {
                         if (k != i) {
-                            SDLNet_TCP_Send(client_sock[k], message, strlen(message) + 1);
+                            SDLNet_TCP_Send(client_sock[k], message, (int) strlen(message) + 1);
                         }
                     }
                 }
@@ -148,7 +148,8 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
         printf("%s\n", SDL_GetError());
     this -> refreshScreen = true;
     this -> placedCards.push_back(c);
-    return &c;
+    Card* ret = &c;
+    return ret;
     
     
 }
@@ -207,10 +208,16 @@ void SDL_Wrapper::syncFPS() {
     }
     if (this -> refreshScreen) {
         SDL_RenderPresent(this -> mainRenderer);
+        this -> reDrawCards();
         this -> refreshScreen = false;
     }
 }
-
+void SDL_Wrapper::reDrawCards() {
+    for (Card c : placedCards) {
+        this -> colorizeCard(&c, 0, 0, 0);
+    }
+    SDL_RenderPresent(this -> mainRenderer);
+}
 
 
 // Loads an image from path and returns surface
@@ -231,7 +238,7 @@ int SDL_Wrapper::teardown(){
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
-    SDLNet_TCP_Close(this -> Server_socket);
+    //SDLNet_TCP_Close(this -> Server_socket);
     SDLNet_FreeSocketSet(this -> socket);
     SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
