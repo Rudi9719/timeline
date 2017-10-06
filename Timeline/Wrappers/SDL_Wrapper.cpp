@@ -207,7 +207,6 @@ void SDL_Wrapper::syncFPS() {
     }
     if (this -> refreshScreen) {
         SDL_RenderPresent(this -> mainRenderer);
-        this -> reDrawCards();
         this -> refreshScreen = false;
     }
 }
