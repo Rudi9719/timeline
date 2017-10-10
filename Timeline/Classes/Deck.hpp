@@ -15,13 +15,16 @@
 
 class Deck {
 public:
+    // Generate a deck (stack) and shuffle cards
     Deck(std::vector<Card> cards);
-    std::vector<Card>* deck;
+    // Draw the top card from the deck, and remove it
     Card* drawCard();
     
     
 private:
+    // Vector of unshuffled cards
     std::vector<Card> unshuffled;
+    // Vector of shuffled cards in deck
     std::vector<Card> shuffled;
     
 };
