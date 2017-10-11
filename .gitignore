@@ -27,7 +27,6 @@ Timeline/build/*
 *.lib
 
 # IDE Files
-*.xcodeproj
 .DS*
 ._*
 
