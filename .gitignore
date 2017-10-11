@@ -29,7 +29,7 @@ Timeline/build/*
 # IDE Files
 .DS*
 ._*
-
+Timeline.xcodeproj/*
 # Executables
 *.exe
 *.out
