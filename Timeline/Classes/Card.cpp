@@ -27,6 +27,7 @@ Card::Card(SDL_Rect rect)
     }
     this -> cardRect = rect;
 }
+
 int Card::getCardType()
 {
     return cardtype;
