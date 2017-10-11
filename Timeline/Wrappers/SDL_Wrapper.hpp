@@ -34,6 +34,7 @@ public:
     
     // Create a SDL Wrapper with height/width of window
     SDL_Wrapper(int h, int w);
+    SDL_Wrapper();
     
     // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
@@ -56,6 +57,7 @@ public:
     void colorizeCard(Card* card, int preset);
     // Move card by xTransform and yTransform NOT TO (x, y)
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
+    void moveCard(int xTransform, int yTransform, Card card);
     // Snyc FPS
     void syncFPS();
     
