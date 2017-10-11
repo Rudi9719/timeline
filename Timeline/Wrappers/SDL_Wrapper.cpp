@@ -9,7 +9,7 @@
 #include "SDL_Wrapper.hpp"
 
 
-// Default constructor, loads a window with height and width
+// Wrapper constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
     SDL_ClearError();
     this->height = h;
@@ -36,13 +36,15 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     this -> startFPS();
     
 }
+
+// Default SDL Wrapper creation
 SDL_Wrapper::SDL_Wrapper() {
     int height = 850;
     int width = 1000;
     SDL_Wrapper(height, width);
 }
 
-
+// Displays message at x and y, using height and defaults to white
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     SDL_ClearError();
     int height = h;
@@ -63,6 +65,8 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
         printf("Error: %s\n", SDL_GetError());
     
 }
+
+// Displays message at x and y, using height and an SDL Color
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Color c) {
     SDL_ClearError();
     int height = h;
@@ -83,6 +87,8 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
     
 }
 
+
+// Allow new connections: Andrew
 bool SDL_Wrapper::allowConnections(TCPsocket sock) {
     if (this -> client_sock[0] != NULL) {
         if (this -> clients <= 5) {
@@ -99,6 +105,8 @@ bool SDL_Wrapper::allowConnections(TCPsocket sock) {
     }
     return false;
 }
+
+// Sync networking: Andrew
 char* SDL_Wrapper::netSync() {
     char* message = NULL;
     while (SDLNet_CheckSockets(socket, 0) > 0) {
@@ -128,6 +136,11 @@ char* SDL_Wrapper::netSync() {
     this -> refreshScreen = true;
     return message;
 }
+
+// Determines if a placed card owns a click
+// If yes, it delegates control to the card.
+// Else it renders a new card at x/y and sets
+//      type to 0.
 void SDL_Wrapper::handleClick(int x, int y) {
     bool clickOwned = false;
     for(Card card : placedCards) {
@@ -143,6 +156,10 @@ void SDL_Wrapper::handleClick(int x, int y) {
     }
 }
 
+
+// Renders a card and pushes it back to the placedCards,
+//      then refreshes the screen
+// returns a pointer to the card rendered
 Card* SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
     
@@ -166,19 +183,21 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
 
 
 
-
+// Color a SDL_Rect using RGB
 void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
     this -> refreshScreen = true;
 }
+// Color a card using RGB
 void SDL_Wrapper::colorizeCard(Card* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, &card -> cardRect);
     this -> refreshScreen = true;
 }
+// Color a card using a preset color
 void SDL_Wrapper::colorizeCard(Card* card, int preset) {
     int r = 0;
     int b = 0;
@@ -198,16 +217,21 @@ void SDL_Wrapper::colorizeCard(Card* card, int preset) {
     this -> refreshScreen = true;
 }
 
+
+// Move a card and it's UIButton then refresh the screen
 void SDL_Wrapper::moveCard(int xTransform, int yTransform, Card card) {
     SDL_ClearError();
     card.moveCard(xTransform, yTransform);
     this -> refreshScreen = true;
 }
 
+// Start FPS limiter
 void SDL_Wrapper::startFPS() {
     
     this -> fpsLimiter.start();
 }
+
+// Sync fps using frame rate from header file
 void SDL_Wrapper::syncFPS() {
     this -> frame++;
     if((this -> fpsLimiter.get_ticks() < 1000/frame_rate))
@@ -220,12 +244,6 @@ void SDL_Wrapper::syncFPS() {
         SDL_RenderPresent(this -> mainRenderer);
         this -> refreshScreen = false;
     }
-}
-void SDL_Wrapper::reDrawCards() {
-    for (Card c : placedCards) {
-        this -> colorizeCard(&c, 0, 0, 0);
-    }
-    SDL_RenderPresent(this -> mainRenderer);
 }
 
 

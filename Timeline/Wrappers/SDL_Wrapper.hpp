@@ -24,13 +24,10 @@
 
 class SDL_Wrapper {
 public:
-    // Should the screen refresh (redraw)
-    bool refreshScreen = false;
+
+    
     // Should the program quit
     bool quit = false;
-    // Is the program in debugging mode
-    bool debug = true;
-    int clients = 0;
     
     // Create a SDL Wrapper with height/width of window
     SDL_Wrapper(int h, int w);
@@ -38,7 +35,8 @@ public:
     
     // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
-    // Render a card TODO: Return a card class instead of SDL_Rect
+    
+    // Render a card, returns pointer to card
     Card* renderCard(int x, int y);
     
     // Should the program allow connections
@@ -72,23 +70,39 @@ public:
 
 private:
     
+    // Should the screen refresh (redraw)
+    bool refreshScreen = false;
+    
+    // Is the program in debugging mode
+    bool debug = true;
+    
+    // Connected clients
+    int clients = 0;
+ 
+    // cards placed (NOT THE DECK)
     std::vector<Card> placedCards;
+    // Limit FPS
     Timer fpsLimiter;
     int frame_rate = 60;
     int frame = 0;
+    
+    // Card default height
     int card_height = 100;
     int card_width = 80;
+    
+    // Window defaults
     int height = 0;
     int width = 0;
     
+    // Networking information
     int activity = 0;
     IPaddress* ip;
     int NET_MAXLEN = 1024;
-    
     SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
     TCPsocket Server_socket;
     TCPsocket client_sock[5];
-    void reDrawCards();
+    
+    // Main items
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;
     SDL_Renderer* mainRenderer = NULL;
