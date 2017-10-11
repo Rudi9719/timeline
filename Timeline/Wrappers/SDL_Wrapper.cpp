@@ -36,6 +36,13 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     this -> startFPS();
     
 }
+SDL_Wrapper::SDL_Wrapper() {
+    int height = 850;
+    int width = 1000;
+    SDL_Wrapper(height, width);
+}
+
+
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     SDL_ClearError();
     int height = h;
@@ -122,15 +129,18 @@ char* SDL_Wrapper::netSync() {
     return message;
 }
 void SDL_Wrapper::handleClick(int x, int y) {
+    bool clickOwned = false;
     for(Card card : placedCards) {
         std::cout << card.getCardType() << std::endl;
         if (card.cardButton.ownsClick(x, y)) {
             card.handleClick(x, y);
-            return;
+            clickOwned = true;
         }
     }
-    Card* newCard = renderCard(x, y);
-    newCard -> setCardType(0);
+    if (!clickOwned) {
+        Card* newCard = renderCard(x, y);
+        newCard -> setCardType(0);
+    }
 }
 
 Card* SDL_Wrapper::renderCard(int x, int y) {
@@ -187,10 +197,10 @@ void SDL_Wrapper::colorizeCard(Card* card, int preset) {
     SDL_RenderFillRect(this -> mainRenderer, &card-> cardRect);
     this -> refreshScreen = true;
 }
-void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
+
+void SDL_Wrapper::moveCard(int xTransform, int yTransform, Card card) {
     SDL_ClearError();
-    card -> x = (card -> x) - xTransform;
-    card -> y = (card -> y) - yTransform;
+    card.moveCard(xTransform, yTransform);
     this -> refreshScreen = true;
 }
 

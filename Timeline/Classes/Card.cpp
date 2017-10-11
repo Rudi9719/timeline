@@ -36,6 +36,13 @@ void Card::setCardType(int _cardtype)
     this -> cardtype = _cardtype;
 }
 
+void Card::moveCard(int xTransform, int yTransform) {
+    this -> cardRect.x += xTransform;
+    this -> cardRect.y += yTransform;
+    this -> cardButton.moveButton(xTransform, yTransform);
+    
+}
+
 int* Card::getPaths() {
     return this -> paths;
 }

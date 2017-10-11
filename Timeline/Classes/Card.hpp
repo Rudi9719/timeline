@@ -26,7 +26,10 @@ private:
 public:
     char* cardName;
     
+    
+    void moveCard(int xTransform, int yTransform);
     void handleClick(int x, int y);
+    
     UIButton cardButton;
     SDL_Rect cardRect;
     Card(SDL_Rect rect);
