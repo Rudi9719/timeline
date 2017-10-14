@@ -7,7 +7,7 @@
 //
 
 #include "SDL_Wrapper.hpp"
-
+#include <cstring>
 
 // Wrapper constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
@@ -18,23 +18,23 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         if (this -> debug)
             std::cout << "Something went wrong with initializing the SDL Library" << std::endl;
     } else {
-        
+
         TTF_Init();
         SDLNet_Init();
         this -> mainRenderer = SDL_CreateRenderer(this -> mainWindow, -1, SDL_RENDERER_ACCELERATED);
-        
+
         SDL_SetRenderDrawColor(this -> mainRenderer, 0, 0, 0, 255);
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
-        
+
     }
-    
+
     Card* helpCard = this -> renderCard(width - 25, 0);
     helpCard -> setCardType(9);
     this -> colorizeCard(helpCard, 247132000);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
-    
+
 }
 
 // Default SDL Wrapper creation
@@ -57,13 +57,13 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     messageRect.y = y;
     messageRect.w = ((int) strlen(message) * (height / 2));
     messageRect.h = height;
-    
+
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
     this -> refreshScreen = true;
-    
+
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
-    
+
 }
 
 // Displays message at x and y, using height and an SDL Color
@@ -78,13 +78,13 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
     messageRect.y = y;
     messageRect.w = ((int) strlen(message) * (height / 2));
     messageRect.h = height;
-    
+
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
     this -> refreshScreen = true;
-    
+
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
-    
+
 }
 
 
@@ -97,7 +97,7 @@ bool SDL_Wrapper::allowConnections(TCPsocket sock) {
             clients++;
             SDLNet_TCP_Send(sock, "WELCOME!", 8);
             return true;
-            
+
         } else {
             SDLNet_TCP_Send(sock, "NO_ROOM", 8);
             SDLNet_TCP_Close(sock);
@@ -113,7 +113,7 @@ char* SDL_Wrapper::netSync() {
         for (int i = 0; i < this -> clients; i++) {
             if (SDLNet_SocketReady(client_sock[i])) {
                 SDLNet_TCP_Recv(client_sock[i], message, this-> NET_MAXLEN);
-                
+
                 if (strcmp(message, "quit") || strcmp(message,"shutdown")) {
                     // delete socket of client and open it up to new client
                     if (strcmp(message, "shutdown")) {
@@ -131,7 +131,7 @@ char* SDL_Wrapper::netSync() {
                 }
             }
         }
-        
+
     }
     this -> refreshScreen = true;
     return message;
@@ -162,7 +162,7 @@ void SDL_Wrapper::handleClick(int x, int y) {
 // returns a pointer to the card rendered
 Card* SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
-    
+
     SDL_Rect r1;
     r1.x = x - this -> card_width / 2;
     r1.y = y - this -> card_height / 2;
@@ -177,8 +177,8 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
     this -> placedCards.push_back(c);
     Card* ret = &c;
     return ret;
-    
-    
+
+
 }
 
 
@@ -227,7 +227,7 @@ void SDL_Wrapper::moveCard(int xTransform, int yTransform, Card card) {
 
 // Start FPS limiter
 void SDL_Wrapper::startFPS() {
-    
+
     this -> fpsLimiter.start();
 }
 
@@ -255,7 +255,7 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
         if (this -> debug)
             printf("%s\n", SDL_GetError());
     }
-    
+
     return imageSurface;
 }
 
@@ -289,7 +289,7 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
             return true;
         }
     }
-    
+
     return false;
-    
+
 }
