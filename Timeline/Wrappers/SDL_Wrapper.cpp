@@ -9,7 +9,8 @@
 #include "SDL_Wrapper.hpp"
 #include <cstring>
 
-// Wrapper constructor, loads a window with height and width
+
+// Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
     SDL_ClearError();
     this->height = h;
@@ -26,25 +27,14 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_SetRenderDrawColor(this -> mainRenderer, 0, 0, 0, 255);
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
-
     }
-
     Card* helpCard = this -> renderCard(width - 25, 0);
     helpCard -> setCardType(9);
     this -> colorizeCard(helpCard, 247132000);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
-
 }
 
-// Default SDL Wrapper creation
-SDL_Wrapper::SDL_Wrapper() {
-    int height = 850;
-    int width = 1000;
-    SDL_Wrapper(height, width);
-}
-
-// Displays message at x and y, using height and defaults to white
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
     SDL_ClearError();
     int height = h;
@@ -65,8 +55,6 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
         printf("Error: %s\n", SDL_GetError());
 
 }
-
-// Displays message at x and y, using height and an SDL Color
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Color c) {
     SDL_ClearError();
     int height = h;
@@ -84,11 +72,8 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
 
     if (this -> debug)
         printf("Error: %s\n", SDL_GetError());
-
 }
 
-
-// Allow new connections: Andrew
 bool SDL_Wrapper::allowConnections(TCPsocket sock) {
     if (this -> client_sock[0] != NULL) {
         if (this -> clients <= 5) {
@@ -105,8 +90,6 @@ bool SDL_Wrapper::allowConnections(TCPsocket sock) {
     }
     return false;
 }
-
-// Sync networking: Andrew
 char* SDL_Wrapper::netSync() {
     char* message = NULL;
     while (SDLNet_CheckSockets(socket, 0) > 0) {
@@ -131,73 +114,121 @@ char* SDL_Wrapper::netSync() {
                 }
             }
         }
-
     }
     this -> refreshScreen = true;
     return message;
 }
-
-// Determines if a placed card owns a click
-// If yes, it delegates control to the card.
-// Else it renders a new card at x/y and sets
-//      type to 0.
 void SDL_Wrapper::handleClick(int x, int y) {
-    bool clickOwned = false;
+    std::cout << "Mouse Event:" << std::endl;
+    std::cout << "X: " << x << " Y: " << y << std::endl;
     for(Card card : placedCards) {
         std::cout << card.getCardType() << std::endl;
         if (card.cardButton.ownsClick(x, y)) {
             card.handleClick(x, y);
-            clickOwned = true;
+            return;
         }
     }
-    if (!clickOwned) {
-        Card* newCard = renderCard(x, y);
-        newCard -> setCardType(0);
+    if(x>300 && x<379) {
+        std::cout << "Column 1 Selected" << std::endl;
+        Card* newCard = renderCard(300, y);
+        placedCards.back().setColumn(1);
+        placedCards.back().setCardType(0);
+    }
+    else if(x>380 && x<459) {
+        std::cout << "Column 2 Selected" << std::endl;
+        Card* newCard = renderCard(380, y);
+        placedCards.back().setColumn(2);
+        placedCards.back().setCardType(0);
+    }
+    else if(x>460 && x<539) {
+        std::cout << "Column 3 Selected" << std::endl;
+        Card* newCard = renderCard(460, y);
+        placedCards.back().setColumn(3);
+        placedCards.back().setCardType(0);
+    }
+    else if(x>540 && x<619) {
+        std::cout << "Column 4 Selected" << std::endl;
+        Card* newCard = renderCard(540, y);
+        placedCards.back().setColumn(4);
+        placedCards.back().setCardType(0);
+    }
+    else if(x>620 && x<700) {
+        std::cout << "Column 5 Selected" << std::endl;
+        Card* newCard = renderCard(620, y);
+        placedCards.back().setColumn(5);
+        placedCards.back().setCardType(0);
+    }
+    std::cout << "Card vector column values:" << std::endl;
+    for (int i = 0;i<placedCards.size();i++) {
+        std::cout << placedCards.at(i).getColumn() << " ";
     }
 }
 
-
-// Renders a card and pushes it back to the placedCards,
-//      then refreshes the screen
-// returns a pointer to the card rendered
 Card* SDL_Wrapper::renderCard(int x, int y) {
     SDL_ClearError();
 
     SDL_Rect r1;
-    r1.x = x - this -> card_width / 2;
-    r1.y = y - this -> card_height / 2;
+    int cardRGBgrey = 200;
+    cardRGBgrey = cardRGBgrey - (((this->placedCards.size())*10)%200);
+    r1.x = x;
+    r1.y = y;
     r1.w = card_width;
     r1.h = card_height;
     Card c = Card(r1);
-    SDL_SetRenderDrawColor( this -> mainRenderer, 200, 200, 200,255);
-    SDL_RenderFillRect(this -> mainRenderer, &r1);
+    // Wipe screen clear and get ready to display next frame of cards
+    clearScreen(cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
+    SDL_SetRenderDrawColor( this -> mainRenderer, cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
     if (this -> debug)
         printf("%s\n", SDL_GetError());
+    c.setRGB
+    (
+        c.getR()-(((this->placedCards.size())*10)%170),
+        c.getG()-(((this->placedCards.size())*10)%170),
+        c.getB()-(((this->placedCards.size())*10)%170)
+    );
     this -> refreshScreen = true;
-    this -> placedCards.push_back(c);
+    this -> placedCards.push_back(c); // adds card to vector
+    displayCards();
+
     Card* ret = &c;
     return ret;
 
+}
 
+void SDL_Wrapper::displayCards() {
+    //goes through all placed cards
+    for(int i = 0;i<placedCards.size();i++) {
+        //adds cards to frame to be displayed
+        SDL_SetRenderDrawColor(this -> mainRenderer,
+                               placedCards.at(i).getR(),
+                               placedCards.at(i).getG(),
+                               placedCards.at(i).getB(),
+                               255);
+
+        SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
+    }
+}
+
+void SDL_Wrapper::clearScreen(int r,int g,int b, int opac) {
+    SDL_SetRenderDrawColor(this -> mainRenderer, 0,0,0,255);
+    SDL_RenderClear(this -> mainRenderer);
+    //uses passed vars to set draw color back to what it was originally
+    SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b,opac);
 }
 
 
-
-// Color a SDL_Rect using RGB
 void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, card);
     this -> refreshScreen = true;
 }
-// Color a card using RGB
 void SDL_Wrapper::colorizeCard(Card* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
     SDL_RenderFillRect(this -> mainRenderer, &card -> cardRect);
     this -> refreshScreen = true;
 }
-// Color a card using a preset color
 void SDL_Wrapper::colorizeCard(Card* card, int preset) {
     int r = 0;
     int b = 0;
@@ -216,22 +247,17 @@ void SDL_Wrapper::colorizeCard(Card* card, int preset) {
     SDL_RenderFillRect(this -> mainRenderer, &card-> cardRect);
     this -> refreshScreen = true;
 }
-
-
-// Move a card and it's UIButton then refresh the screen
-void SDL_Wrapper::moveCard(int xTransform, int yTransform, Card card) {
+void SDL_Wrapper::moveCard(int xTransform, int yTransform, SDL_Rect* card) {
     SDL_ClearError();
-    card.moveCard(xTransform, yTransform);
+    card -> x = (card -> x) - xTransform;
+    card -> y = (card -> y) - yTransform;
     this -> refreshScreen = true;
 }
 
-// Start FPS limiter
 void SDL_Wrapper::startFPS() {
 
     this -> fpsLimiter.start();
 }
-
-// Sync fps using frame rate from header file
 void SDL_Wrapper::syncFPS() {
     this -> frame++;
     if((this -> fpsLimiter.get_ticks() < 1000/frame_rate))
@@ -244,6 +270,12 @@ void SDL_Wrapper::syncFPS() {
         SDL_RenderPresent(this -> mainRenderer);
         this -> refreshScreen = false;
     }
+}
+void SDL_Wrapper::reDrawCards() {
+    for (Card c : placedCards) {
+        this -> colorizeCard(&c, 0, 0, 0);
+    }
+    SDL_RenderPresent(this -> mainRenderer);
 }
 
 
