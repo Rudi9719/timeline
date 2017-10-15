@@ -175,7 +175,7 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
         printf("%s\n", SDL_GetError());
     this -> refreshScreen = true;
     this -> placedCards.push_back(c);
-    Card* ret = &c;
+    Card* ret = &placedCards.back();
     return ret;
 
 
