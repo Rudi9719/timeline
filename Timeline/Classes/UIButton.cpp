@@ -9,8 +9,7 @@
 #include "UIButton.hpp"
 
 UIButton::UIButton() {
-    // Never used, fixes compiler error
-
+    // Uh-oh
 }
 UIButton::UIButton(SDL_Rect rect) {
     this -> x = rect.x;
