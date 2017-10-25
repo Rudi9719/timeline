@@ -6,49 +6,54 @@
 //  Copyright © 2017 iduR-Net. All rights reserved.
 //
 
+
 #include <stdio.h>
-#include "Card_hpp"
+#include <iostream>
+#include "../../Classes/Card.hpp"
 #include "UIButton.hpp"
 
-SDL_Rect rect;
 
-Card myCard(rect);
-
-//getCardTypeTest
-cout << myCard.getCardType() << endl;
-
-//setCardTypeTest
-myCard.setCardType(1);
-cout << myCard.getCardType() << endl;
-
-//moveCardTest
-myCard.moveCard(100,100);
-
-//getPathsTests
-int* p;
-p = myCard.getPaths();
-cout << p << endl;
-
-//handleClickTest
-myCard.handleClick(3,4);
+using namespace std;
 
 
-//getColumnTest
-int col;
-col = getColumn();
-cout << col << endl;
-
-//getComTypeTest
-int* point;
-point = getComType();
-cout << point << endl;
-
-//getComTakenTest
-int* pointer;
-pointer = getComTaken();
-cout << pointer << endl;
-
-
+int main() {
+    SDL_Rect rect;
+    
+    Card myCard(rect);
+    
+    cout << "getCardTypeTest" << endl;
+    cout << myCard.getCardType() << endl;
+    
+    cout << "setCardTypeTest" << endl;
+    myCard.setCardType(1);
+    cout << myCard.getCardType() << endl;
+    
+    cout << "moveCardTest" << endl;
+    cout << "Old (x, y) : (" << myCard.cardRect.x;
+    cout << " , " << myCard.cardRect.y << ")" << endl;
+    myCard.moveCard(4,4);
+    cout << "New (x, y) : (" << myCard.cardRect.x;
+    cout << " , " << myCard.cardRect.y << ")" << endl;
+    
+    cout << "getPathsTests" << endl;
+    cout << *myCard.getPaths() << endl;
+    
+    cout << "handleClickTest" << endl;
+    myCard.handleClick(3,4);
+    
+    
+    cout << "getColumnTest" << endl;
+    int col;
+    col = myCard.getColumn();
+    cout << col << endl;
+    
+    cout << "getComTypeTest" << endl;
+    cout << *myCard.getComType() << endl;
+    
+    cout << "getComTakenTest" << endl;
+    cout << *myCard.getComTaken()  << endl;
+    
+}
 
 
 
