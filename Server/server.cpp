@@ -1,4 +1,5 @@
-
+//TODO Time out on here you will send
+//TODO threading for all of this and checking for the time out
 /*
 Setting up SDL and SDL_net
 */
@@ -11,6 +12,26 @@ Setting up SDL and SDL_net
 
 //Defining Max lenght of string that Client can send to the server
 #define MAXLEN 1024
+
+//Time out function:Send timeout to all clients every 3 seconds if error quit
+int Timeout( TCPsocket* Client, int *clients, bool* running) {
+	int result = 0;
+	while (running) {
+		SDL_Delay(3000);
+		for (int i = 0; i <= *clients; i++) {
+			result = SDLNet_TCP_Send(Client[i], "Timeout", 7);
+			if (result < 8) {
+				running = false;
+				result = 0;
+			}
+			else {
+				result = 0;
+			}
+		}
+	}
+			return 0;
+}
+
 
 using namespace std;
 int main(int argc, char **argv) {

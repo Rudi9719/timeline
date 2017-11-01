@@ -11,32 +11,25 @@
 #define MAXLEN 1024
 
 using namespace std;
-
-/*
-Threaded Read MSg
-*/
-
-/*void ReadMSG(TCPsocket sock, int &quit){
-
-char msg[MAXLEN];
-cout << "in thread";
-int result;
-while (quit == 0)
+//Counting timeout
+int Timeout(bool * running, int* timeout) {
+	while (running)
 	{
-	result = SDLNet_TCP_Recv(sock, msg, MAXLEN - 1);
-	if (result <= 0) {
-		SDLNet_TCP_Close(sock);
-		
-	}
-	else {
-		msg[result] = 0;
-		cout << msg;
+		*timeout++;
+		SDL_Delay(1000);
+		if (*timeout > 10) {
+			*running = false;
+		}
 	}
 
-	}
-cout << "Quiting thread now" << endl;
+	return 0;
 }
-*/
+
+//Cin thread
+int Sending() {
+	return 0;
+}
+
 
 int main(int argc, char **argv) {
 	
@@ -48,6 +41,7 @@ int main(int argc, char **argv) {
 	int can_send = 1;
 	int Len;
 	int quit = 0;
+	int timeout = 0;
 //	int Port_input;
 	IPaddress Server_IP;
 	string IP_input;
@@ -68,9 +62,9 @@ int main(int argc, char **argv) {
 	tcpsock = SDLNet_TCP_Open(&Server_IP);
 	SDLNet_TCP_AddSocket(Client_set, tcpsock);
 	cout << "Started" << endl;
-	//Add threading here
-	//thread	Readthread ( ReadMSG , tcpsock, ref(quit));
+
 	SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
+	
 	cout << Msg << "\n";
 	if (Msg[0] == '0') {
 		can_send = 0;
@@ -80,6 +74,7 @@ int main(int argc, char **argv) {
 		if (can_send == 0) {
 
 			getline(cin, Message);
+			can_send = 1;
 			if (Message == "quit") {
 				Len = Message.size() + 1;
 				SDLNet_TCP_Send(tcpsock, Message.c_str(), Len);
@@ -104,7 +99,7 @@ int main(int argc, char **argv) {
 
 		}
 	}
-
+	
 	cout << "\n Now leaving the client";
 	SDLNet_TCP_Close(tcpsock);
 	SDLNet_FreeSocketSet(Client_set);
