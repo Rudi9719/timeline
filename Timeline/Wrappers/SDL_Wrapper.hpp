@@ -46,6 +46,9 @@ public:
     //displays the entire vector deck of cards
     void displayCards();
 
+    int getWindowHeight();
+    int getWindowWidth();
+
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);
 
@@ -62,6 +65,8 @@ public:
     void colorizeCard(Card* card, int preset);
     // Move card by xTransform and yTransform NOT TO (x, y)
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
+    void shiftCardColumn (int column);
+    void cardPlacer (int mousex, int mousey);
     // Snyc FPS
     void syncFPS();
 

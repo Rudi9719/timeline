@@ -28,9 +28,9 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
     }
-    Card* helpCard = this -> renderCard(width - 25, 0);
-    helpCard -> setCardType(9);
-    this -> colorizeCard(helpCard, 247132000);
+    Card* helpCard = this -> renderCard(width-80, 0);
+    placedCards.back().setCardType(9);
+    this -> colorizeCard(helpCard, 255,100,100);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
 }
@@ -122,46 +122,93 @@ void SDL_Wrapper::handleClick(int x, int y) {
     std::cout << "Mouse Event:" << std::endl;
     std::cout << "X: " << x << " Y: " << y << std::endl;
     for(Card card : placedCards) {
-        std::cout << card.getCardType() << std::endl;
-        if (card.cardButton.ownsClick(x, y)) {
+        std::cout << card.getCardType() << " ";
+        if (card.cardButton.ownsClick(x, y, card.cardRect)) {
             card.handleClick(x, y);
             return;
         }
     }
-    if(x>300 && x<379) {
-        std::cout << "Column 1 Selected" << std::endl;
-        Card* newCard = renderCard(300, y);
-        placedCards.back().setColumn(1);
-        placedCards.back().setCardType(0);
-    }
-    else if(x>380 && x<459) {
-        std::cout << "Column 2 Selected" << std::endl;
-        Card* newCard = renderCard(380, y);
-        placedCards.back().setColumn(2);
-        placedCards.back().setCardType(0);
-    }
-    else if(x>460 && x<539) {
-        std::cout << "Column 3 Selected" << std::endl;
-        Card* newCard = renderCard(460, y);
-        placedCards.back().setColumn(3);
-        placedCards.back().setCardType(0);
-    }
-    else if(x>540 && x<619) {
-        std::cout << "Column 4 Selected" << std::endl;
-        Card* newCard = renderCard(540, y);
-        placedCards.back().setColumn(4);
-        placedCards.back().setCardType(0);
-    }
-    else if(x>620 && x<700) {
-        std::cout << "Column 5 Selected" << std::endl;
-        Card* newCard = renderCard(620, y);
-        placedCards.back().setColumn(5);
-        placedCards.back().setCardType(0);
-    }
+    std::cout << "" << std::endl;
+
+    cardPlacer(x,y);
+
     std::cout << "Card vector column values:" << std::endl;
     for (int i = 0;i<placedCards.size();i++) {
         std::cout << placedCards.at(i).getColumn() << " ";
     }
+}
+
+void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
+
+        int column_selected =-1;
+        int cardy = 0;
+
+        if((mousex>((this->width/2)-(card_width*2.5)))&&(mousex<((this->width/2)-(card_width*1.5)))) {
+           column_selected =1;
+        }
+        else if ((mousex>((this->width/2)-(card_width*1.5)))&&(mousex<((this->width/2)-(card_width*0.5)))) {
+            column_selected = 2;
+        }
+        else if ((mousex>((this->width/2)-(card_width*0.5)))&&(mousex<((this->width/2)+(card_width*0.5)))) {
+            column_selected = 3;
+        }
+        else if ((mousex>((this->width/2)+(card_width*0.5)))&&(mousex<((this->width/2)+(card_width*1.5)))) {
+            column_selected = 4;
+        }
+        else if ((mousex>((this->width/2)+(card_width*1.5)))&&(mousex<((this->width/2)+(card_width*2.5)))) {
+            column_selected = 5;
+        }
+        std::cout << "Column " << column_selected << " Selected" << std::endl;
+        int cardsincolumn = 0;
+
+        for(int i=0;i<placedCards.size();i++) {
+            if (placedCards.at(i).getColumn()==column_selected)
+                cardsincolumn++;
+        }
+
+        if (cardsincolumn ==0)
+            cardy = ((this->height/2)-(card_height/2));
+
+        if (!(cardsincolumn==0)) {
+
+            int highY;
+            int lowY;
+            //Initialize high and low Y
+            for(int i = 0; i<placedCards.size();i++) {
+                if(placedCards.at(i).getColumn() == column_selected) {
+                    lowY = placedCards.at(i).getY();
+                    highY = placedCards.at(i).getY();
+                    break;
+                }
+            }
+
+            // Find current high and low Y values
+            for(int i =0; i<placedCards.size();i++) {
+                if((placedCards.at(i).getColumn()==column_selected)&&(placedCards.at(i).getY()>highY)) {
+                    highY = placedCards.at(i).getY();
+                }
+                if((placedCards.at(i).getColumn()==column_selected)&&(placedCards.at(i).getY()<lowY)) {
+                    lowY = placedCards.at(i).getY();
+                }
+            }
+
+            // Modify Y to match user's demands
+            if (mousey<(this->height)/2) { //lower than middle screen
+                cardy = lowY-100;
+            }
+            else if (mousey>(this->height)/2) { //higher than middle screen
+                cardy = highY+100;
+            }
+        }
+        if (column_selected != -1) {
+            Card* newCard = renderCard((((this->width/2)-(card_width*2.5))+((column_selected-1)*card_width)), cardy);
+            placedCards.back().setColumn(column_selected);
+            placedCards.back().setCardType(0);
+            //CALL FUNCTION TO SHIFT CARDS HERE
+            shiftCardColumn(column_selected);
+            clearScreen(0,0,0,255);
+            displayCards();
+        }
 }
 
 Card* SDL_Wrapper::renderCard(int x, int y) {
@@ -209,6 +256,13 @@ void SDL_Wrapper::displayCards() {
     }
 }
 
+void SDL_Wrapper::shiftCardColumn(int target_column) {
+    for(int i = 0;i<placedCards.size();i++) {
+        if (placedCards.at(i).getColumn()==target_column)
+            placedCards.at(i).setY(placedCards.at(i).getY()-25);
+    }
+}
+
 void SDL_Wrapper::clearScreen(int r,int g,int b, int opac) {
     SDL_SetRenderDrawColor(this -> mainRenderer, 0,0,0,255);
     SDL_RenderClear(this -> mainRenderer);
@@ -220,7 +274,7 @@ void SDL_Wrapper::clearScreen(int r,int g,int b, int opac) {
 void SDL_Wrapper::colorizeCard(SDL_Rect* card, int r, int g , int b) {
     SDL_ClearError();
     SDL_SetRenderDrawColor(this -> mainRenderer, r, g, b, 255 );
-    SDL_RenderFillRect(this -> mainRenderer, card);
+    displayCards();
     this -> refreshScreen = true;
 }
 void SDL_Wrapper::colorizeCard(Card* card, int r, int g , int b) {
@@ -324,4 +378,11 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
 
     return false;
 
+}
+
+int SDL_Wrapper::getWindowHeight() {
+    return this->height;
+}
+int SDL_Wrapper::getWindowWidth() {
+    return this->width;
 }
