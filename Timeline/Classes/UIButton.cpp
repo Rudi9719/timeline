@@ -18,10 +18,10 @@ UIButton::UIButton(SDL_Rect rect) {
     this -> y2 = rect.y + rect.h;
 }
 
-bool UIButton::ownsClick(int x, int y) {
-    if (x > this -> x && x < this -> x2) {
-        
-        if (y > this -> y && y < this -> y2) {
+bool UIButton::ownsClick(int x, int y, SDL_Rect rect) {
+    if (x > rect.x && x < (rect.x+rect.w)) {
+
+        if (y > rect.y && y < (rect.y+rect.h)) {
             return true;
         }
     }

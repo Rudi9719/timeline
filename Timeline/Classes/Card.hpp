@@ -30,6 +30,10 @@ public:
     UIButton cardButton;
     SDL_Rect cardRect;
     Card(SDL_Rect rect);
+    int getY();
+    void setY(int y_new);
+    int getX();
+    void setX(int x_new);
     int getCardType();
     void setCardType(int);
     int* getPaths();

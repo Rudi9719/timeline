@@ -14,17 +14,17 @@
 
 class UIButton {
 public:
-    bool ownsClick(int x, int y);
+    bool ownsClick(int x, int y, SDL_Rect rect);
     void moveButton(int xTransform, int yTransform);
     UIButton(SDL_Rect rect);
     UIButton();
-    
+
 private:
     int x;
     int y;
     int x2;
     int y2;
-    
+
 };
 
 

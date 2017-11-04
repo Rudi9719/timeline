@@ -80,3 +80,16 @@ int Card::getG() {
 int Card::getB() {
     return this -> b;
 }
+
+int Card::getY() {
+    return this->cardRect.y;
+}
+void Card::setY(int y_new) {
+    this->cardRect.y = y_new;
+}
+int Card::getX() {
+    return this->cardRect.x;
+}
+void Card::setX(int x_new) {
+    this->cardRect.x = x_new;
+}
