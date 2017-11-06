@@ -160,7 +160,6 @@ class GameScene: SKScene {
     }
     func handleClick(at pos: CGPoint, color: SKColor) {
         let touchedNode = self.nodes(at: pos)
-        print(touchedNode.last?.name)
         if (touchedNode.last?.name ?? "" == helpNode?.name) {
             rulesNode?.isHidden = !(rulesNode?.isHidden)!
         } else if (touchedNode.last?.name ?? "" == rulesNode?.name) {
