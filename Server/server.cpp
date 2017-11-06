@@ -14,19 +14,12 @@ Setting up SDL and SDL_net
 #define MAXLEN 1024
 
 //Time out function:Send timeout to all clients every 3 seconds if error quit
-int Timeout( TCPsocket* Client, int *clients, bool* running) {
-	int result = 0;
+int Timeout( int * timeout, bool* running) {
 	while (running) {
-		SDL_Delay(3000);
-		for (int i = 0; i <= *clients; i++) {
-			result = SDLNet_TCP_Send(Client[i], "Timeout", 7);
-			if (result < 8) {
-				running = false;
-				result = 0;
-			}
-			else {
-				result = 0;
-			}
+		SDL_Delay(1000);
+			timeout++;
+		if (*timeout >= 10) {
+			running = false;
 		}
 	}
 			return 0;
@@ -42,7 +35,7 @@ int main(int argc, char **argv) {
 	//All the varible that this code needs
 	char temp_char[MAXLEN];
 	string temp_string;
-//	int activity;
+	int timeout = 0;
 	int Clients = 0;
 	IPaddress IP;
 	/*
@@ -61,6 +54,8 @@ int main(int argc, char **argv) {
 	Server_socket = SDLNet_TCP_Open(&IP);
 	
 	cout << "Started" << endl;
+	
+	//Create thread here
 
 	do {
 		//connect all incoming tcp requst to the server
@@ -103,13 +98,30 @@ int main(int argc, char **argv) {
 						//send all data recieve from client I to all clients except I
 						for (int k = 0; k < Clients; k++) {
 							if (k != i) {
-								SDLNet_TCP_Send(client_sock[k], temp_char, strlen(temp_char) + 1);
+								int result = SDLNet_TCP_Send(client_sock[k], temp_char, strlen(temp_char) + 1);
+								if (result < strlen(temp_char)) {
+									Running = false;
+								}
+								else
+								{
+									timeout = 0;
+								}
+								
 							}
 						}
 					}
 				}
 			}
 
+		}
+		if (timeout >= 5) {
+			for (int k = 0; k < Clients; k++) {
+					int result = SDLNet_TCP_Send(client_sock[k], "timeout", 8);
+					if (result < 7) {
+						Running = false;
+					}
+				}
+			timeout = 0;
 		}
 
 
