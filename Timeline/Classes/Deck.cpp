@@ -1,29 +1,60 @@
 //
 //  Deck.cpp
-//  Timeline
+//  
 //
-//  Created by Rudi on 10/4/17.
-//  Copyright © 2017 STEiN-Net. All rights reserved.
+//  Created by Alexis Walker on 10/20/17.
 //
-
 
 #include "Deck.hpp"
 #include <vector>
+#include <iostream>
+#include <iterator>
+#include <time.h>
+#include <string>
 
-Deck::Deck(std::vector<Card> cards) {
-    this -> unshuffled = cards;
-    for(int i = 0; i < 46; i++ ) {
-        int random = 0; // fix this
-        this -> shuffled.push_back(cards.at(random)); // push back card at random
-        // You need to iterate over the unshuffled
-        // Look into vector for loop iterator
-        // that way you can use erase (iterator)
-        cards.erase(<#const_iterator __position#>); // See?
+Deck::Deck(){
+    std::vector<std::string> cardDeck;
+    
+    for (pos = 1; pos < 6; ++pos){
+        cardFilePath = "assets/card" + std::to_string(pos) + ".bmp" ;
+        
+        cardDeck.push_back(cardFilePath);
     }
     
+   this -> unshuffled = cardDeck;
+   this -> shuffled = unshuffled;
+    pos = 0;
 }
-Card* Deck::drawCard() {
-    // Return address of card & remove it
+
+void Deck::printUnshuffled(){
+    std::copy(unshuffled.begin(), unshuffled.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
+}
+
+void Deck::printShuffled(){
+    std::copy(shuffled.begin(), shuffled.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
+}
+
+//Shuffle the array
+void Deck::shuffle(){
+    std::shuffle(shuffled.begin(), shuffled.end(), std::default_random_engine(time(0)));
+}
+
+//Function to draw card
+void Deck::draw(){
+    if (!end_of_deck){
+    //Copies the file path (string) at the indicated position
+    cardFilePath = shuffled.at(pos);
+    pos++;
     
-    return nullptr; // Haha no.
+    //Needs to be a C char array to be used with SDL
+    drawnCard = cardFilePath.c_str();
+
+    img = SDL_LoadBMP(drawnCard);
+    
+    std::cout << "\n" << drawnCard << std::endl;
+    
+    if (cardFilePath == shuffled.back()) end_of_deck = true;
+    }
+    
+    if (end_of_deck) std::cout << "\nEnd of deck. No more cards." << std::endl;
 }
