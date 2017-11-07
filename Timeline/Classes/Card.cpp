@@ -27,6 +27,14 @@ Card::Card(SDL_Rect rect)
     }
     this -> cardRect = rect;
 }
+SDL_Surface* Card::getCardSurface()
+{
+    return cardSurfaceImg;
+}
+SDL_Texture* Card::getCardTexture()
+{
+    return cardTextureImg;
+}
 int Card::getCardType()
 {
     return cardtype;

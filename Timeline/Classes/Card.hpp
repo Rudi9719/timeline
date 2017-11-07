@@ -11,6 +11,8 @@
 
 #include <vector>
 #include "UIButton.hpp"
+#include <cstring>
+#include "string"
 
 class Card
 {
@@ -29,7 +31,14 @@ public:
     void handleClick(int x, int y);
     UIButton cardButton;
     SDL_Rect cardRect;
+    SDL_Surface *cardSurfaceImg = NULL;
+    SDL_Surface* getCardSurface();
+
+    SDL_Texture *cardTextureImg = NULL;
+    SDL_Texture* getCardTexture();
+
     Card(SDL_Rect rect);
+
     int getY();
     void setY(int y_new);
     int getX();
