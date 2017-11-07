@@ -169,10 +169,11 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
         if (cardsincolumn ==0)
             cardy = ((this->height/2)-(card_height/2));
 
+        int highY;
+        int lowY;
+
         if (!(cardsincolumn==0)) {
 
-            int highY;
-            int lowY;
             //Initialize high and low Y
             for(int i = 0; i<placedCards.size();i++) {
                 if(placedCards.at(i).getColumn() == column_selected) {
@@ -246,13 +247,20 @@ void SDL_Wrapper::displayCards() {
     //goes through all placed cards
     for(int i = 0;i<placedCards.size();i++) {
         //adds cards to frame to be displayed
-        SDL_SetRenderDrawColor(this -> mainRenderer,
+        /*SDL_SetRenderDrawColor(this -> mainRenderer,
                                placedCards.at(i).getR(),
                                placedCards.at(i).getG(),
                                placedCards.at(i).getB(),
                                255);
-
-        SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
+        */
+        SDL_Surface *img = placedCards.at(i).getCardSurface();
+        img = SDL_LoadBMP("assets/testcard.bmp");
+        if(img == NULL)
+            std::cout << "Error loading testcard BMP" << std::endl;
+        SDL_Texture *texture = placedCards.at(i).getCardTexture();
+        texture = SDL_CreateTextureFromSurface(this->mainRenderer, img);
+        SDL_RenderCopy(this->mainRenderer,texture,NULL,&placedCards.at(i).cardRect);
+        //SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
     }
 }
 
