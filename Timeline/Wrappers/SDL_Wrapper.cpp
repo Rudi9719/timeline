@@ -235,8 +235,10 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
         c.getB()-(((this->placedCards.size())*10)%170)
     );
     this -> refreshScreen = true;
-    this -> placedCards.push_back(c);
-    Card* ret = &placedCards.back();
+    this -> placedCards.push_back(c); // adds card to vector
+    displayCards();
+
+    Card* ret = &c;
     return ret;
 
 }

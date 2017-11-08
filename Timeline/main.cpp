@@ -25,7 +25,7 @@ int main(int argc, const char * argv[]) {
 
 
         while (!wrapper.quit) {
-                while (SDL_WaitEvent(&event)) {
+                while (SDL_WaitEventTimeout(&event, 4)) {
 
                         switch(event.type) {
 
