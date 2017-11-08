@@ -7,7 +7,7 @@
 //
 
 #include <iostream>
-#include "Wrappers/SDL_Wrapper.hpp"
+#include "../Timeline/Wrappers/SDL_Wrapper.hpp"
 #undef main
 
 int main(int argc, const char * argv[]);
@@ -56,8 +56,7 @@ int main(int argc, const char * argv[]) {
                                 
 
                         } // End switch on event.type
-                default:
-                    wrapper.handleClick()
+               
                 } // End Poll event loop
             SDL_FlushEvent(event.type);
             wrapper.syncFPS();
