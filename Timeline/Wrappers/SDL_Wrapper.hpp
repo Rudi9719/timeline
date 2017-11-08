@@ -31,19 +31,27 @@ public:
     // Is the program in debugging mode
     bool debug = true;
     int clients = 0;
-    
+
     // Create a SDL Wrapper with height/width of window
     SDL_Wrapper(int h, int w);
-    SDL_Wrapper();
-    
+
     // Load an image and get a SDL_Surface pointer to it - Depreciated?
     SDL_Surface* loadImage(const char* path);
     // Render a card TODO: Return a card class instead of SDL_Rect
     Card* renderCard(int x, int y);
-    
+
+    //clear screen in prep for next frame
+    void clearScreen(int r,int g,int b,int opac);
+
+    //displays the entire vector deck of cards
+    void displayCards();
+
+    int getWindowHeight();
+    int getWindowWidth();
+
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);
-    
+
     // NetSync message
     char* netSync();
     // Handle click at (X, Y)
@@ -57,45 +65,47 @@ public:
     void colorizeCard(Card* card, int preset);
     // Move card by xTransform and yTransform NOT TO (x, y)
     void moveCard(int xTransform, int yTransform, SDL_Rect* card);
-    void moveCard(int xTransform, int yTransform, Card card);
+    void shiftCardColumn (int column);
+    void cardPlacer (int mousex, int mousey);
     // Snyc FPS
     void syncFPS();
-    
-    
-    
-    
+
+
+
+
     // Start FPS Called Automatically.
     void startFPS();
     // Close the program down and return the error/ok status
     int teardown();
-    
+
 
 private:
-    
-    std::vector<Card> placedCards = *new std::vector<Card>;
+
+    std::vector<Card> placedCards;
     Timer fpsLimiter;
-    int frame_rate = 1;
+    int frame_rate = 60;
     int frame = 0;
     int card_height = 100;
     int card_width = 80;
     int height = 0;
     int width = 0;
-    
+
     int activity = 0;
     IPaddress* ip;
     int NET_MAXLEN = 1024;
-    
+
+
     SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
     TCPsocket Server_socket;
     TCPsocket client_sock[5];
     void reDrawCards();
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;
-    SDL_Renderer* mainRenderer;// = NULL;
-    
+    SDL_Renderer* mainRenderer = NULL;
+
     bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
-    
-    
+
+
 };
 
 
