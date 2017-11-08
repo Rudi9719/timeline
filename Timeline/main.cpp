@@ -41,7 +41,6 @@ int main(int argc, const char * argv[]) {
                                         break;
 
                                 case SDLK_SPACE:
-                                        wrapper.displayText("Yo mother fucker!", 400, 500, 40);
                                         break;
 
                                 } // End switch on key
