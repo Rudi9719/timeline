@@ -14,6 +14,7 @@
 #include <string>
 #include <random>
 #include <SDL2_image/SDL_image.h>
+#include <sstream>
 
 class Deck{
 public:
@@ -27,6 +28,7 @@ public:
     char const *drawnCard;
     
     std::string cardFilePath;
+    std::ostringstream tempFilePath;
     
     SDL_Surface *img = NULL;
     
