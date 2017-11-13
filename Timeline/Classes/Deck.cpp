@@ -15,7 +15,7 @@
 Deck::Deck(){
     std::vector<std::string> cardDeck;
     
-    for (pos = 1; pos < 6; ++pos){
+    for (pos = 1; pos < 47; ++pos){
         tempFilePath << "assets/card" << pos << ".bmp";
         
         cardFilePath = tempFilePath.str();
