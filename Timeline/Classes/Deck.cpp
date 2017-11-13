@@ -17,7 +17,6 @@ Deck::Deck(){
     
     for (pos = 1; pos < 6; ++pos){
         tempFilePath << "assets/card" << pos << ".bmp";
-//        cardFilePath = "assets/card" + std::to_string(pos) + ".bmp" ;
         
         cardFilePath = tempFilePath.str();
         cardDeck.push_back(cardFilePath);
