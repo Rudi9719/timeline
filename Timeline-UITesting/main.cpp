@@ -21,8 +21,9 @@ int main(int argc, const char * argv[]) {
 
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
-
-
+    int windowHeight = wrapper.getWindowHeight();
+    int windowWidth = wrapper.getWindowWidth();
+    int timesRun = 0;
 
         while (!wrapper.quit) {
                 while (SDL_WaitEventTimeout(&event, 4)) {
@@ -56,7 +57,17 @@ int main(int argc, const char * argv[]) {
                                 
 
                         } // End switch on event.type
-               
+                    windowWidth = wrapper.getWindowWidth();
+                    windowHeight = wrapper.getWindowHeight();
+                    if (timesRun < 5) {
+                        for (int i = 0; i < 5; i++) {
+                            int x = rand() % windowWidth - 80;
+                            int y = rand() % windowHeight;
+                            std::cout << "Clicking at: ( " << x << " , " << y << " )." << std::endl;
+                            wrapper.handleClick(x, y);
+                        }
+                        timesRun++;
+                    }
                 } // End Poll event loop
             SDL_FlushEvent(event.type);
             wrapper.syncFPS();
