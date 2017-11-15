@@ -369,9 +369,12 @@ int SDL_Wrapper::teardown(){
 // Check if window can open and populates
 bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
     // Initialization! :D
-    if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
         return false;
     } else {
+        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)==-1) {
+            return false;
+         }else{
         IMG_Init(IMG_INIT_JPG);
         // Make a window!
         window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -384,6 +387,7 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
         }
     }
 
+    
     return false;
 
 }
