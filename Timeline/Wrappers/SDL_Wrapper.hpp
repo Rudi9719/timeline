@@ -19,9 +19,10 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
+#include <cstring>
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
-
+#include "../Classes/Sound.hpp"
 
 class SDL_Wrapper {
 public:

@@ -7,7 +7,7 @@
 //
 
 #include "SDL_Wrapper.hpp"
-#include <cstring>
+
 
 
 // Default constructor, loads a window with height and width
@@ -66,7 +66,7 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
     messageRect.y = y;
     messageRect.w = ((int) strlen(message) * (height / 2));
     messageRect.h = height;
-
+    
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
     this -> refreshScreen = true;
 
@@ -374,22 +374,21 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
     } else {
         if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)==-1) {
             return false;
-         }else{
-        IMG_Init(IMG_INIT_JPG);
-        // Make a window!
-        window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-        if (window == NULL) {
-            return false;
-        } else {
-            // Pass the window back to mainWindow on success
-            this -> mainWindow = window;
-            return true;
+        }else{
+            IMG_Init(IMG_INIT_JPG);
+            // Make a window!
+            window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+            if (window == NULL) {
+                return false;
+            } else {
+                // Pass the window back to mainWindow on success
+                this -> mainWindow = window;
+                return true;
+            }
         }
+
     }
-
-    
     return false;
-
 }
 
 int SDL_Wrapper::getWindowHeight() {

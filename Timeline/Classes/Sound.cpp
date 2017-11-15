@@ -8,6 +8,5 @@
 // Rudi was here
 #include "Sound.hpp"
 
-#include "SDL2/SDL2_mixer"
-
+#include <SDL2/SDL_mixer.h>
 
