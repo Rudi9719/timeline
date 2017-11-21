@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 	int timeout = 0;
 	int Clients = 0;
 	IPaddress IP;
+	
 	/*
 	allocate the socket set as well as creating a socket set
 	*/
@@ -68,10 +69,18 @@ int main(int argc, char **argv) {
 				SDLNet_TCP_AddSocket(socket, temp);
 				client_sock[Clients] = temp;
 				cout << "here" << endl;
-				Clients++; 
+				Clients++;
 				cout << "here" << endl;
-				temp_string = to_string(Clients-1);
-				SDLNet_TCP_Send(temp, temp_string.c_str()  , MAXLEN+1);
+				temp_string = to_string(Clients);
+				SDLNet_TCP_Send(temp, temp_string.c_str(), MAXLEN + 1);
+				if (Clients == 0) {
+					while (SDLNet_CheckSockets(socket, 0) > 0) {
+						if (SDLNet_SocketReady(client_sock[0])) {
+							SDLNet_TCP_Recv(client_sock[0], temp_char, MAXLEN);
+							//grab card vector here for Card deck
+						}
+					}
+				}
 			}
 			else
 			{
@@ -107,6 +116,13 @@ int main(int argc, char **argv) {
 									timeout = 0;
 								}
 								
+							}
+						//After send the data, Send a signal to the next person to go
+							if (i == Clients) {
+								SDLNet_TCP_Send(client_sock[0], "YT", 3);
+							}
+							else {
+								SDLNet_TCP_Send(client_sock[i + 1], "YT", 3);
 							}
 						}
 					}

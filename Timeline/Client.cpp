@@ -1,5 +1,5 @@
 #include<iostream>
-#include<cstdlib>
+#include<stdlib.h>
 #include<SDL.h>
 #include<SDL_net.h>
 #include<string>
@@ -32,23 +32,24 @@ int Sending() {
 
 
 int main(int argc, char **argv) {
-	
+	//This to:
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDLNet_Init();
 	SDLNet_SocketSet Client_set = SDLNet_AllocSocketSet(1);
 	char Msg[MAXLEN];
-//	const char*	IP;
+	//	const char*	IP;
+	int Player;
 	int can_send = 1;
 	int Len;
 	int quit = 0;
 	int timeout = 0;
-//	int Port_input;
+	//	int Port_input;
 	IPaddress Server_IP;
 	string IP_input;
 	TCPsocket tcpsock;
 	string Message;
-	
-	
+	//This implement
+
 	/*cout << "Please Enter IP or WebAddress:   ";
 	getline(cin, IP_input);
 	SDLNet_ResolveHost(&Server_IP, "localhost", 2560);
@@ -56,7 +57,6 @@ int main(int argc, char **argv) {
 
 	tcpsock = SDLNet_TCP_Open(&Server_IP);
 	*/
-	cin >> quit;
 
 	SDLNet_ResolveHost(&Server_IP, "127.0.0.1", 2560);
 	tcpsock = SDLNet_TCP_Open(&Server_IP);
@@ -64,16 +64,18 @@ int main(int argc, char **argv) {
 	cout << "Started" << endl;
 
 	SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
-	
+	Player = atoi(Msg);
 	cout << Msg << "\n";
 	if (Msg[0] == '0') {
 		can_send = 0;
+		//send vector
 	}
+
 	while (quit == 0)
 	{
 		if (can_send == 0) {
 
-			getline(cin, Message);
+
 			can_send = 1;
 			if (Message == "quit") {
 				Len = Message.size() + 1;
@@ -89,14 +91,17 @@ int main(int argc, char **argv) {
 			}
 		}
 		// checks and recieves and data
-		if (SDLNet_CheckSockets(Client_set,0) > 0 &&  SDLNet_SocketReady(tcpsock)) {
+		if (SDLNet_CheckSockets(Client_set, 0) > 0 && SDLNet_SocketReady(tcpsock)) {
 			SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
 			cout << Msg;
+			if (strcmp(Msg, "YT") == 0){
 			can_send = 0;
+			}
 			if (strcmp(Msg, "quit")== 0) {
 				quit = 1;
 			}
 
+			
 		}
 	}
 	
@@ -106,7 +111,9 @@ int main(int argc, char **argv) {
 	SDLNet_Quit();
 	SDL_Quit();
 
-	cin >> quit ; 
+	cin >> quit;
+
+
 
 	return (0);
 }
