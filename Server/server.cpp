@@ -12,21 +12,30 @@ Setting up SDL and SDL_net
 
 //Defining Max lenght of string that Client can send to the server
 #define MAXLEN 1024
+using namespace std;
+typedef struct {
+	int * timeout;
+	bool * running;
+} ThreadData;
 
 //Time out function:Send timeout to all clients every 3 seconds if error quit
-int Timeout( int * timeout, bool* running) {
-	while (running) {
+int Timeout( void* data) {
+	ThreadData *tdata = (ThreadData*)data;
+	int *timeout = tdata->timeout;
+	bool *running = tdata->running;
+	free(data);
+	while (*running) {
 		SDL_Delay(1000);
-			timeout++;
+			*timeout++;
 		if (*timeout >= 10) {
-			running = false;
+			*running = false;
 		}
 	}
 			return 0;
 }
 
 
-using namespace std;
+
 int main(int argc, char **argv) {
 	// Initialize SDL_net library
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -37,6 +46,7 @@ int main(int argc, char **argv) {
 	string temp_string;
 	int timeout = 0;
 	int Clients = 0;
+	int players;
 	IPaddress IP;
 	
 	/*
@@ -55,13 +65,20 @@ int main(int argc, char **argv) {
 	Server_socket = SDLNet_TCP_Open(&IP);
 	
 	cout << "Started" << endl;
+	cout << "Please enter number of players between 2 and 5" << endl;
+	cin >> players;
+	while (players > 5 || players < 2) {
+		cout << "Please enter number of players between 2 and 5" << endl;
+		cin >> players;
+	}
+	ThreadData *data = (ThreadData*)malloc(sizeof(ThreadData));
+	data->running = &Running;
+	data->timeout = &timeout;
 	
-	//Create thread here
-
-	do {
-		//connect all incoming tcp requst to the server
+	
+	while (Clients < players) {
 		TCPsocket temp = SDLNet_TCP_Accept(Server_socket);
-		
+
 		if (temp) {
 			//checks to see if there is room for clients, if so add, else close there socket
 			if (Clients <= 5) {
@@ -89,6 +106,9 @@ int main(int argc, char **argv) {
 			}
 
 		}
+	}
+	SDL_Thread * mythread = SDL_CreateThread(Timeout,"TImeout", data);
+	do {
 		//Check Data
 		while (SDLNet_CheckSockets(socket, 0) > 0) {
 			for (int i = 0; i < Clients; i++) {
