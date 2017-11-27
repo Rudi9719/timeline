@@ -7,7 +7,6 @@
 //
 
 #include "Card.hpp"
-#include <iostream>
 
 Card::Card() {
     this -> cardtype = -1;

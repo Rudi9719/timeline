@@ -9,6 +9,7 @@
 #ifndef Card_hpp
 #define Card_hpp
 
+#include <iostream>
 #include <vector>
 #include "UIButton.hpp"
 #include <cstring>
