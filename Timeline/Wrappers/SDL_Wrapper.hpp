@@ -15,11 +15,11 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
 #include <iostream>
-#include <stdio.h>
 #include <vector>
 #include <string>
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
+#include "../Classes/Deck.hpp"
 
 
 class SDL_Wrapper {
@@ -40,11 +40,16 @@ public:
     // Render a card TODO: Return a card class instead of SDL_Rect
     Card* renderCard(int x, int y);
 
+    //void displayStartCard();
+    //void displayEndCard();
+
     //clear screen in prep for next frame
     void clearScreen(int r,int g,int b,int opac);
 
     //displays the entire vector deck of cards
     void displayCards();
+
+    void displayStaticCards();
 
     int getWindowHeight();
     int getWindowWidth();
@@ -81,6 +86,10 @@ public:
 
 private:
 
+    int deck_pos = 0;
+
+    Deck* cardDeck_paths = new Deck();
+    std::vector<Card> cardDeck = std::vector<Card>(47);
     std::vector<Card> placedCards;
     Timer fpsLimiter;
     int frame_rate = 60;
@@ -93,7 +102,6 @@ private:
     int activity = 0;
     IPaddress* ip;
     int NET_MAXLEN = 1024;
-
 
     SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
     TCPsocket Server_socket;

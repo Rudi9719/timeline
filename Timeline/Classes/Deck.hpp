@@ -1,6 +1,6 @@
 //
 //  Deck.hpp
-//  
+//
 //
 //  Created by Alexis Walker on 10/20/17.
 //
@@ -13,7 +13,7 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <SDL2_image/SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <sstream>
 
 class Deck{
@@ -23,20 +23,22 @@ public:
     void printShuffled();
     void shuffle();
     void draw();
-    
+
+    std::string getFilePathAtPos(int i);
+
     int pos;
     char const *drawnCard;
-    
+
     std::string cardFilePath;
     std::ostringstream tempFilePath;
-    
+
     SDL_Surface *img = NULL;
-    
+
     bool end_of_deck = false;
-    
+
 private:
     std::vector<std::string> cardDeck;
-    std::vector<std::string> shuffled;
+    std::vector<std::string> shuffled = std::vector<std::string>(48);
     std::vector<std::string> unshuffled;
 };
 
