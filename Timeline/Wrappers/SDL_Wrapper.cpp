@@ -7,8 +7,6 @@
 //
 
 #include "SDL_Wrapper.hpp"
-#include <cstring>
-#include <vector>
 
 
 // Default constructor, loads a window with height and width

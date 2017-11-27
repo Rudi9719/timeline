@@ -17,6 +17,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstring>
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
 #include "../Classes/Deck.hpp"
