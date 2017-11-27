@@ -8,7 +8,6 @@
 
 #include "Sound.hpp"
 
-#include <SDL2/SDL_mixer.h>
 
 Sound::Sound(){}
 

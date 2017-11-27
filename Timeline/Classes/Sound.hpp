@@ -9,7 +9,7 @@
 #ifndef Sound_hpp
 #define Sound_hpp
 
-#include <SDL2_mixer/SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 
