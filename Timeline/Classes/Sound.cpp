@@ -11,6 +11,7 @@
 
 Sound::Sound(){}
 
+
 bool Sound::loadSound(){
 //Loading success flag
     bool success = true;
@@ -42,6 +43,9 @@ void Sound::closeSound()
 
 }
 
+void Sound::playAll(){
+    Mix_PlayChannel( -1, CardShuffle, 0 );
+    Mix_PlayChannel( -1, CardPlacement, 0 );
+    
 
-
-
+}
