@@ -32,7 +32,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     }
 
     cardDeck_paths->printUnshuffled();
-
+    sound.playShuffle();
     cardDeck_paths->shuffle();
     for (int i = 0; i<cardDeck.size(); i++) {
         //std::cout << i << " ";

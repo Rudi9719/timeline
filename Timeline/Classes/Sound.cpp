@@ -46,6 +46,15 @@ void Sound::closeSound()
 void Sound::playAll(){
     Mix_PlayChannel( -1, CardShuffle, 0 );
     Mix_PlayChannel( -1, CardPlacement, 0 );
-    
 
 }
+
+void Sound::playShuffle(){
+    Mix_PlayChannel( -1, CardShuffle, 0 );
+}
+
+void Sound::playPlacement(){
+    Mix_PlayChannel( -1, CardPlacement, 0 );
+}
+
+
