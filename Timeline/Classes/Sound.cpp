@@ -19,14 +19,14 @@ bool success = true;
 CardShuffle = Mix_LoadWAV( "../assets/Card_Shuffle.wav" );
 if( CardShuffle == NULL )
 {
-    printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+    printf( "Failed to load shuffle sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
     success = false;
 }
 
 CardPlacement = Mix_LoadWAV( "../assets/Card_Placement.wav" );
 if( CardPlacement == NULL )
 {
-    printf( "Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+    printf( "Failed to load Placement sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
     success = false;
 }
 
