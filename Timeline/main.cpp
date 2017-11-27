@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
 
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
-
+        
 
 
         while (!wrapper.quit) {

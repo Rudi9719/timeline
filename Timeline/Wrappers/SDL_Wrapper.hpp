@@ -96,8 +96,9 @@ private:
     IPaddress* ip;
     int NET_MAXLEN = 1024;
 
-
+    Sound sound;
     SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
+    
     TCPsocket Server_socket;
     TCPsocket client_sock[5];
     void reDrawCards();

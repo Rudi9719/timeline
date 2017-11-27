@@ -12,7 +12,9 @@
 
 // Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
+    
     SDL_ClearError();
+    sound = Sound();
     this->height = h;
     this->width = w;
     if (!init(this->mainWindow, this->mainSurface, this->width, this->height)) {
@@ -33,6 +35,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
     this -> colorizeCard(helpCard, 255,100,100);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
+    
 }
 
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
@@ -363,6 +366,8 @@ int SDL_Wrapper::teardown(){
     SDLNet_FreeSocketSet(this -> socket);
     SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
+    sound.closeSound();
+    Mix_Quit();
     return 0;
 }
 
@@ -372,7 +377,11 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
         return false;
     } else {
-        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)==-1) {
+        bool soundLoaded = sound.loadSound();
+        if( soundLoaded == false){
+            return false;
+        }
+         if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
             return false;
         }else{
             IMG_Init(IMG_INIT_JPG);
