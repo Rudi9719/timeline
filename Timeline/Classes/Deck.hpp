@@ -9,12 +9,15 @@
 #define Deck_hpp
 
 #include <stdio.h>
-//#include "../Wrappers/SDL_Wrapper.hpp"
 #include <vector>
 #include <string>
 #include <random>
 #include <SDL2/SDL_image.h>
 #include <sstream>
+#include <iostream>
+#include <iterator>
+#include <time.h>
+#include <algorithm>
 
 class Deck{
 public:
