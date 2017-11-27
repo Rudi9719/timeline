@@ -30,6 +30,25 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
     }
+
+    cardDeck_paths->printUnshuffled();
+
+    cardDeck_paths->shuffle();
+    for (int i = 0; i<cardDeck.size(); i++) {
+        //std::cout << i << " ";
+        cardDeck.at(i).setCardFilePath(cardDeck_paths->getFilePathAtPos(i));
+        cardDeck.at(i).cardName = "Randomized";
+        //std::cout << i << " " << cardDeck_paths->getFilePathAtPos(i) << std::endl;
+    }
+    for (int i = 0; i<cardDeck.size();i ++) {
+        std::cout << cardDeck.at(i).getCardFilePath() << std::endl;
+    }
+
+    Card* startcard = this -> renderCard(((width)/2)-(card_width*3.5),(height/2-(card_height/1.5)));
+    startcard->setCardFilePath("assets/startcard.bmp");
+    Card* endcard = this -> renderCard(((width)/2)+(card_width*2.5),(height/2-(card_height/1.5)));
+    endcard->setCardFilePath("assets/endcard.bmp");
+
     Card* helpCard = this -> renderCard(width-80, 0);
     placedCards.back().setCardType(9);
     this -> colorizeCard(helpCard, 255,100,100);
@@ -208,6 +227,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
             Card* newCard = renderCard((((this->width/2)-(card_width*2.5))+((column_selected-1)*card_width)), cardy);
             placedCards.back().setColumn(column_selected);
             placedCards.back().setCardType(0);
+            std::cout << placedCards.back().getCardFilePath() << std::endl;
             //CALL FUNCTION TO SHIFT CARDS HERE
             shiftCardColumn(column_selected);
             clearScreen(0,0,0,255);
@@ -225,39 +245,32 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
     r1.y = y;
     r1.w = card_width;
     r1.h = card_height;
-    Card c = Card(r1);
+    cardDeck.at(deck_pos).setCardRect(r1);
     // Wipe screen clear and get ready to display next frame of cards
     clearScreen(cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
     SDL_SetRenderDrawColor( this -> mainRenderer, cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
     if (this -> debug)
         printf("%s\n", SDL_GetError());
-    c.setRGB
+    cardDeck.at(deck_pos).setRGB
     (
-        c.getR()-(((this->placedCards.size())*10)%170),
-        c.getG()-(((this->placedCards.size())*10)%170),
-        c.getB()-(((this->placedCards.size())*10)%170)
+        cardDeck.at(deck_pos).getR()-(((this->placedCards.size())*10)%170),
+        cardDeck.at(deck_pos).getG()-(((this->placedCards.size())*10)%170),
+        cardDeck.at(deck_pos).getB()-(((this->placedCards.size())*10)%170)
     );
     this -> refreshScreen = true;
-    this -> placedCards.push_back(c); // adds card to vector
+    this -> placedCards.push_back(cardDeck.at(deck_pos)); // adds card to vector
     displayCards();
-
-    Card* ret = &c;
+    Card* ret = &cardDeck.at(deck_pos);
+    deck_pos++;
     return ret;
-
 }
 
 void SDL_Wrapper::displayCards() {
     //goes through all placed cards
     for(int i = 0;i<placedCards.size();i++) {
         //adds cards to frame to be displayed
-        /*SDL_SetRenderDrawColor(this -> mainRenderer,
-                               placedCards.at(i).getR(),
-                               placedCards.at(i).getG(),
-                               placedCards.at(i).getB(),
-                               255);
-        */
         SDL_Surface *img = placedCards.at(i).getCardSurface();
-        img = SDL_LoadBMP("assets/testcard.bmp");
+        img = SDL_LoadBMP(placedCards.at(i).getCardFilePath().c_str());
         if(img == NULL)
             std::cout << "Error loading testcard BMP" << std::endl;
         SDL_Texture *texture = placedCards.at(i).getCardTexture();
@@ -265,7 +278,37 @@ void SDL_Wrapper::displayCards() {
         SDL_RenderCopy(this->mainRenderer,texture,NULL,&placedCards.at(i).cardRect);
         //SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
     }
+    //displayStaticCards();
 }
+
+/*
+void SDL_Wrapper::displayStaticCards() {
+    displayStartCard();
+    displayEndCard();
+}
+
+
+void SDL_Wrapper::displayStartCard() {
+    SDL_Surface *img = startcard->getCardSurface();
+    img = SDL_LoadBMP(startcard->getCardFilePath().c_str());
+    if(img == NULL)
+        std::cout << "Error loading Start BMP" << std::endl;
+    SDL_Texture *texture = startcard->getCardTexture();
+    texture = SDL_CreateTextureFromSurface(this->mainRenderer, img);
+    SDL_RenderCopy(this->mainRenderer,texture,NULL,&startcard->cardRect);
+
+}
+
+void SDL_Wrapper::displayEndCard() {
+    SDL_Surface *img = endcard->getCardSurface();
+    img = SDL_LoadBMP(endcard->getCardFilePath().c_str());
+    if(img == NULL)
+        std::cout << "Error loading End BMP" << std::endl;
+    SDL_Texture *texture = endcard->getCardTexture();
+    texture = SDL_CreateTextureFromSurface(this->mainRenderer, img);
+    SDL_RenderCopy(this->mainRenderer,texture,NULL,&endcard->cardRect);
+
+} */
 
 void SDL_Wrapper::shiftCardColumn(int target_column) {
     for(int i = 0;i<placedCards.size();i++) {

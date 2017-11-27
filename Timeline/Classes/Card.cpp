@@ -7,8 +7,20 @@
 //
 
 #include "Card.hpp"
-#include <iostream>
 
+Card::Card() {
+    this -> cardtype = -1;
+    column = -1;
+    for (int i = 0; i > 4; i++) {
+       this -> paths[i] = -1; // give paths placer values
+    }
+    for (int i = 0; i > 4;i++) {
+        this -> comtaken[i] = false; // gives commodity bools placer values
+    }
+    for (int i = 0; i > 4;i++) {
+        this -> comtype[i] = -1; // gives comtypes placer values
+    }
+}
 
 Card::Card(SDL_Rect rect)
 {
@@ -27,6 +39,12 @@ Card::Card(SDL_Rect rect)
     }
     this -> cardRect = rect;
 }
+
+void Card::setCardRect(SDL_Rect new_rect) {
+    this -> cardRect = new_rect;
+    this -> cardButton = UIButton(cardRect);
+}
+
 SDL_Surface* Card::getCardSurface()
 {
     return cardSurfaceImg;
@@ -59,6 +77,14 @@ void Card::handleClick(int x, int y) {
             break;
 
     }
+}
+
+std::string Card::getCardFilePath() {
+    return this->cardFilePath;
+}
+
+void Card::setCardFilePath(std::string new_path) {
+    this->cardFilePath=new_path;
 }
 
 int Card::getColumn() {

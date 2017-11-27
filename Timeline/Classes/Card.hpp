@@ -9,6 +9,7 @@
 #ifndef Card_hpp
 #define Card_hpp
 
+#include <iostream>
 #include <vector>
 #include "UIButton.hpp"
 #include <cstring>
@@ -24,9 +25,12 @@ private:
     bool comtaken[4];
     int comtype[4];
     int r=200,g=200,b=200;
+    std::string cardFilePath = "assets/testcard.bmp";
 
 public:
-    char* cardName;
+
+    Card();
+    std::string cardName = "Not Random";
 
     void handleClick(int x, int y);
     UIButton cardButton;
@@ -39,6 +43,10 @@ public:
 
     Card(SDL_Rect rect);
 
+    void setCardRect(SDL_Rect new_rect);
+
+    std::string getCardFilePath();
+    void setCardFilePath(std::string new_path);
     int getY();
     void setY(int y_new);
     int getX();
