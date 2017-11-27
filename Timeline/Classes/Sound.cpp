@@ -13,7 +13,7 @@ Sound::Sound(){}
 
 bool Sound::loadSound(){
 //Loading success flag
-bool success = true;
+    bool success = true;
 
 //Load sound effects
 CardShuffle = Mix_LoadWAV( "assets/Card_Shuffle.wav" );

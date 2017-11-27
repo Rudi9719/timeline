@@ -377,13 +377,35 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
         return false;
     } else {
-        bool soundLoaded = sound.loadSound();
-        if( soundLoaded == false){
-            return false;
-        }
-         if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+
+        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+            
             return false;
         }else{
+            SDL_AudioSpec want, have;
+            
+            SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
+            want.freq = 48000;
+            want.format = AUDIO_F32;
+            want.channels = 2;
+            want.samples = 4096;
+            
+            if (SDL_OpenAudio(&want, &have) < 0) {
+                SDL_Log("Failed to open audio: %s", SDL_GetError());
+            } else {
+                if (have.format != want.format) {
+                    SDL_Log("We didn't get Float32 audio format.");
+                }
+                SDL_PauseAudio(0); /* start audio playing. */
+                SDL_Delay(5000); /* let the audio callback play some sound for 5 seconds. */
+                SDL_CloseAudio();
+            }
+            bool soundLoaded = sound.loadSound();
+            if( soundLoaded == false){
+                
+                return false;
+                
+            }
             IMG_Init(IMG_INIT_JPG);
             // Make a window!
             window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
