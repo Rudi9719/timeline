@@ -22,6 +22,7 @@
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
 #include "../Classes/Sound.hpp"
+#include "../Classes/Deck.hpp"
 
 class SDL_Wrapper {
 public:
