@@ -18,6 +18,7 @@ public:
     Sound();
     void closeSound();
     bool loadSound();
+    void playAll();
 
 private :
 Mix_Chunk *CardShuffle = NULL;
