@@ -164,7 +164,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
 
         int column_selected =-1;
         int cardy = 0;
-
+        sound.playPlacement();
         if((mousex>((this->width/2)-(card_width*2.5)))&&(mousex<((this->width/2)-(card_width*1.5)))) {
            column_selected =1;
         }
