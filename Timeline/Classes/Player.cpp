@@ -8,4 +8,15 @@
 
 #include "Player.hpp"
 
+Player::Player(int x, int y) {
+    this -> position[0] = x;
+    this -> position[1] = y;
+    
+    this -> money = 0;
+}
 
+void Player::setPosition(int x, int y) {
+    this -> position[0] = x;
+    this -> position[1] = y;
+    
+}

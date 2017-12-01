@@ -11,21 +11,18 @@
 
 class Player {
 public:
-    Player();
+    Player(int x, int y);
     
 
     int money;
     // Player [X, Y]
     int position[2];
-    void setPosition(int x, int y)
-	int getX();
-	int getY();
+    
+    void setPosition(int x, int y);
+    
 private:
 
     int resources[4];
-    //These are the player positions. You probably already have them but they should be set to the default start card
-	//int x = 
-	//int y = 
     
  
 };
