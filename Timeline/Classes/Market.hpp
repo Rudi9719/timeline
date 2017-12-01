@@ -14,6 +14,8 @@
 class Market {
 public:
     
+    Market();
+    
     int valueOf[4];
     
     void updateValues();

@@ -7,3 +7,5 @@
 //
 
 #include "Market.hpp"
+
+Market::Market(){}

@@ -9,9 +9,13 @@
 #ifndef Player_hpp
 #define Player_hpp
 
+#include "Market.hpp"
+
 class Player {
 public:
-    Player(int x, int y);
+    Player(int x, int y, Market mark);
+    
+    static Market sharedMarket;
     
 
     int money;
@@ -20,11 +24,13 @@ public:
     int position[2];
     
     void setPosition(int x, int y);
+    
     void sell(int resource, int count);
     
+    int sellAll();
     
 private:
-
+    
     int resources[4];
     
  
