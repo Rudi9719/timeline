@@ -21,7 +21,7 @@ public:
     void updateValues();
     
 private:
-    
+    // Should the market have any private values? It really just holds public data
     
 };
 

@@ -23,6 +23,8 @@
 #include "../Classes/Timer.hpp"
 #include "../Classes/Sound.hpp"
 #include "../Classes/Deck.hpp"
+#include "../Classes/Player.hpp"
+#include "../Classes/Market.hpp"
 
 class SDL_Wrapper {
 public:
@@ -88,6 +90,9 @@ public:
 
 private:
 
+    Market sharedMarket;
+    Player players[5];
+    
     int deck_pos = 0;
 
     Deck* cardDeck_paths = new Deck();

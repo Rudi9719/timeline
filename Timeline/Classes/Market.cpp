@@ -8,4 +8,8 @@
 
 #include "Market.hpp"
 
-Market::Market(){}
+Market::Market(){
+    for(int i = 0; i < 4; i++) {
+        valueOf[i] = 0;
+    }
+}
