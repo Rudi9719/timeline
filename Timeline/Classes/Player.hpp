@@ -15,10 +15,13 @@ public:
     
 
     int money;
+    
     // Player [X, Y]
     int position[2];
     
     void setPosition(int x, int y);
+    void sell(int resource, int count);
+    
     
 private:
 
