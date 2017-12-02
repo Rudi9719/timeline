@@ -47,6 +47,7 @@ int main(int argc, char **argv) {
 	int timeout = 0;
 	int Clients = 0;
 	int players;
+	int threadReturnValue;
 	IPaddress IP;
 	
 	/*
@@ -162,6 +163,7 @@ int main(int argc, char **argv) {
 
 
 	} while (Running);
+	SDL_WaitThread(mythread, &threadReturnValue);
 	cin >> Clients;
 	cout << "server is closeing" << endl;
 	//De deinitialize everything
