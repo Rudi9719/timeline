@@ -145,5 +145,8 @@ int main(int argc, const char * argv[]) {
 
         } // End main loop
     std::cout << wrapper.teardown() << std::endl;
+	//close thread
+	 SDL_WaitThread(mythread2, NULL);
+	 SDL_WaitThread(mythread1, NULL);
     return 0;
 }
