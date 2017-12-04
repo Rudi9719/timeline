@@ -30,7 +30,7 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
     }
-
+    
     cardDeck_paths->printUnshuffled();
     sound.playShuffle();
     cardDeck_paths->shuffle();
@@ -406,6 +406,7 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
             IMG_Init(IMG_INIT_JPG);
             // Make a window!
             window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+
             if (window == NULL) {
                 return false;
             } else {

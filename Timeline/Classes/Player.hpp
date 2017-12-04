@@ -13,9 +13,11 @@
 
 class Player {
 public:
-    Player(int x, int y, Market mark);
     
-    static Market sharedMarket;
+    
+    Player(int x, int y, Market* mark);
+    
+    Market* sharedMarket;
     
 
     int money;

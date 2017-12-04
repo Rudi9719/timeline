@@ -88,9 +88,15 @@ public:
 
 private:
 
-    Market sharedMarket;
-    Player players[5];
-    
+    Market sharedMarket = Market();
+    Player players[5]= {
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket)
+    };
+    Sound sound;
     int deck_pos = 0;
 
     Deck* cardDeck_paths = new Deck();

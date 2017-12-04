@@ -8,7 +8,9 @@
 
 #include "Player.hpp"
 
-Player::Player(int x, int y, Market mark) {
+
+
+Player::Player(int x, int y, Market* mark) {
     this -> position[0] = x;
     this -> position[1] = y;
     this -> sharedMarket = mark;
@@ -22,7 +24,7 @@ void Player::setPosition(int x, int y) {
 }
 
 void Player::sell(int resource, int count) {
-    this -> money += (sharedMarket.valueOf[resource] * count);
+    this -> money += (sharedMarket->valueOf[resource] * count);
 }
 
 int Player::sellAll() {
