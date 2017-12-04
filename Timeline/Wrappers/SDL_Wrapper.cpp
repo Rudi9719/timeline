@@ -164,7 +164,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
 
         int column_selected =-1;
         int cardy = 0;
-        sound.playPlacement();
+        
         if((mousex>((this->width/2)-(card_width*2.5)))&&(mousex<((this->width/2)-(card_width*1.5)))) {
            column_selected =1;
         }
@@ -182,8 +182,8 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
         }
         std::cout << "Column " << column_selected << " Selected" << std::endl;
         int cardsincolumn = 0;
-
-        for(int i=0;i<placedCards.size();i++) {
+    
+    for(int i=0;i<placedCards.size();i++) {
             if (placedCards.at(i).getColumn()==column_selected)
                 cardsincolumn++;
         }
@@ -193,7 +193,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
 
         int highY;
         int lowY;
-
+ 
         if (!(cardsincolumn==0)) {
 
             //Initialize high and low Y
@@ -232,6 +232,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
             shiftCardColumn(column_selected);
             clearScreen(0,0,0,255);
             displayCards();
+             sound.playPlacement();
         }
 }
 
