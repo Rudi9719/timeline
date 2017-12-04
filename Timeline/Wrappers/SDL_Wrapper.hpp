@@ -61,8 +61,6 @@ public:
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);
 
-    // NetSync message
-    char* netSync();
     // Handle click at (X, Y)
     void handleClick(int x, int y);
     // Display message at x, y, with a height of h
@@ -106,15 +104,6 @@ private:
     int height = 0;
     int width = 0;
 
-    int activity = 0;
-    IPaddress* ip;
-    int NET_MAXLEN = 1024;
-
-    Sound sound;
-    SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
-    
-    TCPsocket Server_socket;
-    TCPsocket client_sock[5];
     void reDrawCards();
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;

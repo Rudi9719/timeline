@@ -96,50 +96,6 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
         printf("Error: %s\n", SDL_GetError());
 }
 
-bool SDL_Wrapper::allowConnections(TCPsocket sock) {
-    if (this -> client_sock[0] != NULL) {
-        if (this -> clients <= 5) {
-            SDLNet_TCP_AddSocket(this -> socket, sock);
-            this -> client_sock[clients] = sock;
-            clients++;
-            SDLNet_TCP_Send(sock, "WELCOME!", 8);
-            return true;
-
-        } else {
-            SDLNet_TCP_Send(sock, "NO_ROOM", 8);
-            SDLNet_TCP_Close(sock);
-        }
-    }
-    return false;
-}
-char* SDL_Wrapper::netSync() {
-    char* message = NULL;
-    while (SDLNet_CheckSockets(socket, 0) > 0) {
-        for (int i = 0; i < this -> clients; i++) {
-            if (SDLNet_SocketReady(client_sock[i])) {
-                SDLNet_TCP_Recv(client_sock[i], message, this-> NET_MAXLEN);
-
-                if (strcmp(message, "quit") || strcmp(message,"shutdown")) {
-                    // delete socket of client and open it up to new client
-                    if (strcmp(message, "shutdown")) {
-                        this -> quit = true;
-                    }
-                }
-                else
-                {
-                    //send all data recieve from client I to all clients except I
-                    for (int k = 0; k < this -> clients; k++) {
-                        if (k != i) {
-                            SDLNet_TCP_Send(client_sock[k], message, (int) strlen(message) + 1);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this -> refreshScreen = true;
-    return message;
-}
 void SDL_Wrapper::handleClick(int x, int y) {
     std::cout << "Mouse Event:" << std::endl;
     std::cout << "X: " << x << " Y: " << y << std::endl;
@@ -405,8 +361,6 @@ int SDL_Wrapper::teardown(){
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
-    //SDLNet_TCP_Close(this -> Server_socket);
-    SDLNet_FreeSocketSet(this -> socket);
     SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
     sound.closeSound();
