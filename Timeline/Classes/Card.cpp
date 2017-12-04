@@ -45,10 +45,10 @@ void Card::setPositions() {
     this -> positions[2][0] = cardRect.x + 5;
     this -> positions[3][0] = cardRect.x + 5;
     this -> positions[4][0] = cardRect.x + 5;
-    this -> positions[0][1] = cardRect.y - 21;
-    this -> positions[2][1] = cardRect.y - 82;
-    this -> positions[3][1] = cardRect.y - 144;
-    this -> positions[4][1] = cardRect.y - 204;
+    this -> positions[0][1] = cardRect.y + 21;
+    this -> positions[2][1] = cardRect.y + 82;
+    this -> positions[3][1] = cardRect.y + 144;
+    this -> positions[4][1] = cardRect.y + 204;
 }
 void Card::setCardRect(SDL_Rect new_rect) {
     this -> cardRect = new_rect;
