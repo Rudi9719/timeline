@@ -14,13 +14,17 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
-#include <stdio.h>
 #include <vector>
 #include <string>
+#include <cstring>
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
-
+#include "../Classes/Sound.hpp"
+#include "../Classes/Deck.hpp"
+#include "../Classes/Player.hpp"
+#include "../Classes/Market.hpp"
 
 class SDL_Wrapper {
 public:
@@ -40,11 +44,16 @@ public:
     // Render a card TODO: Return a card class instead of SDL_Rect
     Card* renderCard(int x, int y);
 
+    //void displayStartCard();
+    //void displayEndCard();
+
     //clear screen in prep for next frame
     void clearScreen(int r,int g,int b,int opac);
 
     //displays the entire vector deck of cards
     void displayCards();
+
+    void displayStaticCards();
 
     int getWindowHeight();
     int getWindowWidth();
@@ -52,8 +61,6 @@ public:
     // Should the program allow connections
     bool allowConnections(TCPsocket sock);
 
-    // NetSync message
-    char* netSync();
     // Handle click at (X, Y)
     void handleClick(int x, int y);
     // Display message at x, y, with a height of h
@@ -81,6 +88,19 @@ public:
 
 private:
 
+    Market sharedMarket = Market();
+    Player players[5]= {
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket),
+        Player(0, 0, &sharedMarket)
+    };
+    Sound sound;
+    int deck_pos = 0;
+
+    Deck* cardDeck_paths = new Deck();
+    std::vector<Card> cardDeck = std::vector<Card>(47);
     std::vector<Card> placedCards;
     Timer fpsLimiter;
     int frame_rate = 60;
@@ -90,14 +110,6 @@ private:
     int height = 0;
     int width = 0;
 
-    int activity = 0;
-    IPaddress* ip;
-    int NET_MAXLEN = 1024;
-
-
-    SDLNet_SocketSet socket = SDLNet_AllocSocketSet(5);
-    TCPsocket Server_socket;
-    TCPsocket client_sock[5];
     void reDrawCards();
     SDL_Surface* mainSurface = NULL;
     SDL_Window* mainWindow = NULL;

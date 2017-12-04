@@ -7,12 +7,24 @@
 //
 
 #include "Card.hpp"
-#include <iostream>
 
+Card::Card() {
+    this -> cardtype = -1;
+    column = -1;
+    for (int i = 0; i > 4; i++) {
+       this -> paths[i] = -1; // give paths placer values
+    }
+    for (int i = 0; i > 4;i++) {
+        this -> comtaken[i] = false; // gives commodity bools placer values
+    }
+    for (int i = 0; i > 4;i++) {
+        this -> comtype[i] = -1; // gives comtypes placer values
+    }
+}
 
 Card::Card(SDL_Rect rect)
 {
-
+    
     this -> cardButton = UIButton(rect);
     this -> cardtype = -1;
     column = -1;
@@ -26,7 +38,23 @@ Card::Card(SDL_Rect rect)
         this -> comtype[i] = -1; // gives comtypes placer values
     }
     this -> cardRect = rect;
+    this -> setPositions();
 }
+void Card::setPositions() {
+    this -> positions[0][0] = cardRect.x + 5;
+    this -> positions[2][0] = cardRect.x + 5;
+    this -> positions[3][0] = cardRect.x + 5;
+    this -> positions[4][0] = cardRect.x + 5;
+    this -> positions[0][1] = cardRect.y + 21;
+    this -> positions[2][1] = cardRect.y + 82;
+    this -> positions[3][1] = cardRect.y + 144;
+    this -> positions[4][1] = cardRect.y + 204;
+}
+void Card::setCardRect(SDL_Rect new_rect) {
+    this -> cardRect = new_rect;
+    this -> cardButton = UIButton(cardRect);
+}
+
 SDL_Surface* Card::getCardSurface()
 {
     return cardSurfaceImg;
@@ -59,6 +87,14 @@ void Card::handleClick(int x, int y) {
             break;
 
     }
+}
+
+std::string Card::getCardFilePath() {
+    return this->cardFilePath;
+}
+
+void Card::setCardFilePath(std::string new_path) {
+    this->cardFilePath=new_path;
 }
 
 int Card::getColumn() {
@@ -94,10 +130,12 @@ int Card::getY() {
 }
 void Card::setY(int y_new) {
     this->cardRect.y = y_new;
+    this -> setPositions();
 }
 int Card::getX() {
     return this->cardRect.x;
 }
 void Card::setX(int x_new) {
     this->cardRect.x = x_new;
+    this -> setPositions();
 }

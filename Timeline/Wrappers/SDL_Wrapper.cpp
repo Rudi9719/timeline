@@ -7,12 +7,14 @@
 //
 
 #include "SDL_Wrapper.hpp"
-#include <cstring>
+
 
 
 // Default constructor, loads a window with height and width
 SDL_Wrapper::SDL_Wrapper(int h, int w){
+    
     SDL_ClearError();
+    sound = Sound();
     this->height = h;
     this->width = w;
     if (!init(this->mainWindow, this->mainSurface, this->width, this->height)) {
@@ -28,11 +30,31 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
     }
+    
+    cardDeck_paths->printUnshuffled();
+    sound.playShuffle();
+    cardDeck_paths->shuffle();
+    for (int i = 0; i<cardDeck.size(); i++) {
+        //std::cout << i << " ";
+        cardDeck.at(i).setCardFilePath(cardDeck_paths->getFilePathAtPos(i));
+        cardDeck.at(i).cardName = "Randomized";
+        //std::cout << i << " " << cardDeck_paths->getFilePathAtPos(i) << std::endl;
+    }
+    for (int i = 0; i<cardDeck.size();i ++) {
+        std::cout << cardDeck.at(i).getCardFilePath() << std::endl;
+    }
+
+    Card* startcard = this -> renderCard(((width)/2)-(card_width*3.5),(height/2-(card_height/1.5)));
+    startcard->setCardFilePath("assets/startcard.bmp");
+    Card* endcard = this -> renderCard(((width)/2)+(card_width*2.5),(height/2-(card_height/1.5)));
+    endcard->setCardFilePath("assets/endcard.bmp");
+
     Card* helpCard = this -> renderCard(width-80, 0);
     placedCards.back().setCardType(9);
     this -> colorizeCard(helpCard, 255,100,100);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
+    
 }
 
 void SDL_Wrapper::displayText(const char* message, int x, int y, int h) {
@@ -66,7 +88,7 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
     messageRect.y = y;
     messageRect.w = ((int) strlen(message) * (height / 2));
     messageRect.h = height;
-
+    
     SDL_RenderCopy(this -> mainRenderer, messageTexture, NULL, &messageRect);
     this -> refreshScreen = true;
 
@@ -74,50 +96,6 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
         printf("Error: %s\n", SDL_GetError());
 }
 
-bool SDL_Wrapper::allowConnections(TCPsocket sock) {
-    if (this -> client_sock[0] != NULL) {
-        if (this -> clients <= 5) {
-            SDLNet_TCP_AddSocket(this -> socket, sock);
-            this -> client_sock[clients] = sock;
-            clients++;
-            SDLNet_TCP_Send(sock, "WELCOME!", 8);
-            return true;
-
-        } else {
-            SDLNet_TCP_Send(sock, "NO_ROOM", 8);
-            SDLNet_TCP_Close(sock);
-        }
-    }
-    return false;
-}
-char* SDL_Wrapper::netSync() {
-    char* message = NULL;
-    while (SDLNet_CheckSockets(socket, 0) > 0) {
-        for (int i = 0; i < this -> clients; i++) {
-            if (SDLNet_SocketReady(client_sock[i])) {
-                SDLNet_TCP_Recv(client_sock[i], message, this-> NET_MAXLEN);
-
-                if (strcmp(message, "quit") || strcmp(message,"shutdown")) {
-                    // delete socket of client and open it up to new client
-                    if (strcmp(message, "shutdown")) {
-                        this -> quit = true;
-                    }
-                }
-                else
-                {
-                    //send all data recieve from client I to all clients except I
-                    for (int k = 0; k < this -> clients; k++) {
-                        if (k != i) {
-                            SDLNet_TCP_Send(client_sock[k], message, (int) strlen(message) + 1);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    this -> refreshScreen = true;
-    return message;
-}
 void SDL_Wrapper::handleClick(int x, int y) {
     std::cout << "Mouse Event:" << std::endl;
     std::cout << "X: " << x << " Y: " << y << std::endl;
@@ -142,7 +120,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
 
         int column_selected =-1;
         int cardy = 0;
-
+        sound.playPlacement();
         if((mousex>((this->width/2)-(card_width*2.5)))&&(mousex<((this->width/2)-(card_width*1.5)))) {
            column_selected =1;
         }
@@ -205,6 +183,7 @@ void SDL_Wrapper::cardPlacer(int mousex, int mousey) {
             Card* newCard = renderCard((((this->width/2)-(card_width*2.5))+((column_selected-1)*card_width)), cardy);
             placedCards.back().setColumn(column_selected);
             placedCards.back().setCardType(0);
+            std::cout << placedCards.back().getCardFilePath() << std::endl;
             //CALL FUNCTION TO SHIFT CARDS HERE
             shiftCardColumn(column_selected);
             clearScreen(0,0,0,255);
@@ -222,39 +201,32 @@ Card* SDL_Wrapper::renderCard(int x, int y) {
     r1.y = y;
     r1.w = card_width;
     r1.h = card_height;
-    Card c = Card(r1);
+    cardDeck.at(deck_pos).setCardRect(r1);
     // Wipe screen clear and get ready to display next frame of cards
     clearScreen(cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
     SDL_SetRenderDrawColor( this -> mainRenderer, cardRGBgrey,cardRGBgrey,cardRGBgrey,255);
     if (this -> debug)
         printf("%s\n", SDL_GetError());
-    c.setRGB
+    cardDeck.at(deck_pos).setRGB
     (
-        c.getR()-(((this->placedCards.size())*10)%170),
-        c.getG()-(((this->placedCards.size())*10)%170),
-        c.getB()-(((this->placedCards.size())*10)%170)
+        cardDeck.at(deck_pos).getR()-(((this->placedCards.size())*10)%170),
+        cardDeck.at(deck_pos).getG()-(((this->placedCards.size())*10)%170),
+        cardDeck.at(deck_pos).getB()-(((this->placedCards.size())*10)%170)
     );
     this -> refreshScreen = true;
-    this -> placedCards.push_back(c); // adds card to vector
+    this -> placedCards.push_back(cardDeck.at(deck_pos)); // adds card to vector
     displayCards();
-
-    Card* ret = &c;
+    Card* ret = &cardDeck.at(deck_pos);
+    deck_pos++;
     return ret;
-
 }
 
 void SDL_Wrapper::displayCards() {
     //goes through all placed cards
     for(int i = 0;i<placedCards.size();i++) {
         //adds cards to frame to be displayed
-        /*SDL_SetRenderDrawColor(this -> mainRenderer,
-                               placedCards.at(i).getR(),
-                               placedCards.at(i).getG(),
-                               placedCards.at(i).getB(),
-                               255);
-        */
         SDL_Surface *img = placedCards.at(i).getCardSurface();
-        img = SDL_LoadBMP("assets/testcard.bmp");
+        img = SDL_LoadBMP(placedCards.at(i).getCardFilePath().c_str());
         if(img == NULL)
             std::cout << "Error loading testcard BMP" << std::endl;
         SDL_Texture *texture = placedCards.at(i).getCardTexture();
@@ -262,7 +234,37 @@ void SDL_Wrapper::displayCards() {
         SDL_RenderCopy(this->mainRenderer,texture,NULL,&placedCards.at(i).cardRect);
         //SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
     }
+    //displayStaticCards();
 }
+
+/*
+void SDL_Wrapper::displayStaticCards() {
+    displayStartCard();
+    displayEndCard();
+}
+
+
+void SDL_Wrapper::displayStartCard() {
+    SDL_Surface *img = startcard->getCardSurface();
+    img = SDL_LoadBMP(startcard->getCardFilePath().c_str());
+    if(img == NULL)
+        std::cout << "Error loading Start BMP" << std::endl;
+    SDL_Texture *texture = startcard->getCardTexture();
+    texture = SDL_CreateTextureFromSurface(this->mainRenderer, img);
+    SDL_RenderCopy(this->mainRenderer,texture,NULL,&startcard->cardRect);
+
+}
+
+void SDL_Wrapper::displayEndCard() {
+    SDL_Surface *img = endcard->getCardSurface();
+    img = SDL_LoadBMP(endcard->getCardFilePath().c_str());
+    if(img == NULL)
+        std::cout << "Error loading End BMP" << std::endl;
+    SDL_Texture *texture = endcard->getCardTexture();
+    texture = SDL_CreateTextureFromSurface(this->mainRenderer, img);
+    SDL_RenderCopy(this->mainRenderer,texture,NULL,&endcard->cardRect);
+
+} */
 
 void SDL_Wrapper::shiftCardColumn(int target_column) {
     for(int i = 0;i<placedCards.size();i++) {
@@ -359,33 +361,63 @@ int SDL_Wrapper::teardown(){
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
-    //SDLNet_TCP_Close(this -> Server_socket);
-    SDLNet_FreeSocketSet(this -> socket);
     SDLNet_Quit();
     SDL_DestroyRenderer(this -> mainRenderer);
+    sound.closeSound();
+    Mix_Quit();
     return 0;
 }
 
 // Check if window can open and populates
 bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height) {
     // Initialization! :D
-    if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ) {
         return false;
     } else {
-        IMG_Init(IMG_INIT_JPG);
-        // Make a window!
-        window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-        if (window == NULL) {
+
+        if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+            
             return false;
-        } else {
-            // Pass the window back to mainWindow on success
-            this -> mainWindow = window;
-            return true;
+        }else{
+            SDL_AudioSpec want, have;
+            
+            SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
+            want.freq = 48000;
+            want.format = AUDIO_F32;
+            want.channels = 2;
+            want.samples = 4096;
+            
+            if (SDL_OpenAudio(&want, &have) < 0) {
+                SDL_Log("Failed to open audio: %s", SDL_GetError());
+            } else {
+                if (have.format != want.format) {
+                    SDL_Log("We didn't get Float32 audio format.");
+                }
+                SDL_PauseAudio(0); /* start audio playing. */
+                SDL_Delay(5000); /* let the audio callback play some sound for 5 seconds. */
+                SDL_CloseAudio();
+            }
+            bool soundLoaded = sound.loadSound();
+            if( soundLoaded == false){
+                
+                return false;
+                
+            }
+            IMG_Init(IMG_INIT_JPG);
+            // Make a window!
+            window = SDL_CreateWindow("Timeline", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+
+            if (window == NULL) {
+                return false;
+            } else {
+                // Pass the window back to mainWindow on success
+                this -> mainWindow = window;
+                return true;
+            }
         }
+
     }
-
     return false;
-
 }
 
 int SDL_Wrapper::getWindowHeight() {
