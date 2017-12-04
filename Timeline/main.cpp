@@ -43,20 +43,28 @@ void Recv(void * data){
 	char Msg[MAXLEN];
 	int x;
 	int y;
+	char * y_char;
+    char * x_char;
 	while(running){
 		if (SDLNet_CheckSockets(Client_set, 0) > 0 && SDLNet_SocketReady(tcpsock)) {
 			SDLNet_TCP_Recv(tcpsock, Msg, MAXLEN);
 			// Split the string into an x and y
-			wrapper.handleClick(x,y);
+			if((strcmp(Msg, "quit")== 0 || strcmp(Msg, "YT") == 0){
 			if (strcmp(Msg, "YT") == 0){
 				can_send = 0;
 				}
 			if (strcmp(Msg, "quit")== 0) {
 				running = false;
 				wrapper.quit = true;
-				}
-
-			
+				}	
+				
+			}else{
+				x_char = strtok (str," ,");
+				y_char = strtok (NULL, " , ");
+				x = atoi(x_char);
+				y = atoi(y_char);
+				wrapper.handleClick(x,y);
+			}
 		}
 	}
 }
