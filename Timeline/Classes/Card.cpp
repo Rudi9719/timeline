@@ -24,7 +24,7 @@ Card::Card() {
 
 Card::Card(SDL_Rect rect)
 {
-
+    
     this -> cardButton = UIButton(rect);
     this -> cardtype = -1;
     column = -1;
@@ -38,8 +38,18 @@ Card::Card(SDL_Rect rect)
         this -> comtype[i] = -1; // gives comtypes placer values
     }
     this -> cardRect = rect;
+    this -> setPositions();
 }
-
+void Card::setPositions() {
+    this -> positions[0][0] = cardRect.x + 5;
+    this -> positions[2][0] = cardRect.x + 5;
+    this -> positions[3][0] = cardRect.x + 5;
+    this -> positions[4][0] = cardRect.x + 5;
+    this -> positions[0][1] = cardRect.y - 21;
+    this -> positions[2][1] = cardRect.y - 82;
+    this -> positions[3][1] = cardRect.y - 144;
+    this -> positions[4][1] = cardRect.y - 204;
+}
 void Card::setCardRect(SDL_Rect new_rect) {
     this -> cardRect = new_rect;
     this -> cardButton = UIButton(cardRect);
@@ -120,10 +130,12 @@ int Card::getY() {
 }
 void Card::setY(int y_new) {
     this->cardRect.y = y_new;
+    this -> setPositions();
 }
 int Card::getX() {
     return this->cardRect.x;
 }
 void Card::setX(int x_new) {
     this->cardRect.x = x_new;
+    this -> setPositions();
 }

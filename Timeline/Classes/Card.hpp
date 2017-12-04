@@ -43,8 +43,9 @@ public:
 
     Card(SDL_Rect rect);
 
+    void setPositions();
     void setCardRect(SDL_Rect new_rect);
-
+    int positions[4][2];
     std::string getCardFilePath();
     void setCardFilePath(std::string new_path);
     int getY();
