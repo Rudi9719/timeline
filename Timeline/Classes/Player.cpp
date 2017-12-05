@@ -25,6 +25,7 @@ void Player::setPosition(int x, int y) {
 void Player::movePlayer(int xTransform, int yTransform) {
     this -> position[0] += xTransform;
     this -> position[1] += yTransform;
+    std::cout << "Player at: (" << position[0] << "," << position[1] << ")" << std::endl;
 }
 void Player::sell(int resource, int count) {
     this -> money += (sharedMarket->valueOf[resource] * count);

@@ -10,6 +10,7 @@
 #define Player_hpp
 
 #include "Market.hpp"
+#include <iostream>
 
 class Player {
 public:
