@@ -25,6 +25,7 @@ public:
     // Player [X, Y]
     int position[2];
     
+    void movePlayer(int xTransform, int yTransform);
     void setPosition(int x, int y);
     
     void sell(int resource, int count);

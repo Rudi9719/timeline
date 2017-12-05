@@ -22,7 +22,10 @@ void Player::setPosition(int x, int y) {
     this -> position[1] = y;
     
 }
-
+void Player::movePlayer(int xTransform, int yTransform) {
+    this -> position[0] += xTransform;
+    this -> position[1] += yTransform;
+}
 void Player::sell(int resource, int count) {
     this -> money += (sharedMarket->valueOf[resource] * count);
 }
