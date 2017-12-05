@@ -44,14 +44,15 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         std::cout << cardDeck.at(i).getCardFilePath() << std::endl;
     }
 
-    Card* startcard = this -> renderCard(((width)/2)-(card_width*3.5),(height/2-(card_height/1.5)));
-    startcard->setCardFilePath("assets/startcard.bmp");
-    Card* endcard = this -> renderCard(((width)/2)+(card_width*2.5),(height/2-(card_height/1.5)));
-    endcard->setCardFilePath("assets/endcard.bmp");
-
+    Card* startcard = this -> renderCard(((width)/2)-(card_width*3.5),((height/2)-card_height*.75));
+    placedCards.back().setCardFilePath("assets/startcard.bmp");
+    placedCards.back().setCardType(2);
+    Card* endcard = this -> renderCard(((width)/2)+(card_width*2.5),((height/2)-card_height*.75));
+    placedCards.back().setCardFilePath("assets/endcard.bmp");
+    placedCards.back().setCardType(2);
     Card* helpCard = this -> renderCard(width-80, 0);
+    placedCards.back().setCardFilePath("assets/helpcard.bmp");
     placedCards.back().setCardType(9);
-    this -> colorizeCard(helpCard, 255,100,100);
     this -> displayText("Help", width - 60, 10, 30);
     this -> startFPS();
     
