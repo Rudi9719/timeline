@@ -77,18 +77,13 @@ public:
     // Snyc FPS
     void syncFPS();
 
-
+    
 
 
     // Start FPS Called Automatically.
     void startFPS();
     // Close the program down and return the error/ok status
     int teardown();
-
-
-private:
-
-    Market sharedMarket = Market();
     Player players[5]= {
         Player(0, 0, &sharedMarket),
         Player(0, 0, &sharedMarket),
@@ -96,6 +91,11 @@ private:
         Player(0, 0, &sharedMarket),
         Player(0, 0, &sharedMarket)
     };
+
+private:
+
+    Market sharedMarket = Market();
+
     Sound sound;
     int deck_pos = 0;
 

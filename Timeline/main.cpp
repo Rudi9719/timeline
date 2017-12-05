@@ -42,6 +42,18 @@ int main(int argc, const char * argv[]) {
 
                                 case SDLK_SPACE:
                                         break;
+                                    case SDLK_UP:
+                                        wrapper.players[1].movePlayer(0, -4);
+                                        break;
+                                    case SDLK_DOWN:
+                                        wrapper.players[1].movePlayer(0, 4);
+                                        break;
+                                    case SDLK_LEFT:
+                                        wrapper.players[1].movePlayer(-4, 0);
+                                        break;
+                                    case SDLK_RIGHT:
+                                        wrapper.players[1].movePlayer(4, 0);
+                                        break;
 
                                 } // End switch on key
                                 case SDL_MOUSEBUTTONDOWN:
