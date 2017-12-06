@@ -482,6 +482,7 @@ int SDL_Wrapper::receivingThread(void){
 
 		}
 	}
+    return 0;
 }
 
 int SDL_Wrapper::getWindowHeight() {
