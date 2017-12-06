@@ -29,6 +29,17 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
         SDL_SetRenderDrawColor(this -> mainRenderer, 0, 0, 0, 255);
         SDL_RenderClear(this -> mainRenderer);
         SDL_RenderPresent(this -> mainRenderer);
+		
+		
+		SDLNet_ResolveHost(&Server_IP, "127.0.0.1", 2560);
+		tcpsock = SDLNet_TCP_Open(&Server_IP);
+		SDLNet_TCP_AddSocket(Client_set, tcpsock);
+		SDLNet_TCP_Recv(tcpsock, Msg, 1024);
+		Your_num = atoi(Msg);
+		if (Msg[0] == '0') {
+			yourTurn = true;
+		}
+		thread = SDL_CreateThread(thread_func_wrapper, NULL, this);
     }
     
     cardDeck_paths->printUnshuffled();
@@ -99,6 +110,12 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
 void SDL_Wrapper::handleClick(int x, int y) {
     std::cout << "Mouse Event:" << std::endl;
     std::cout << "X: " << x << " Y: " << y << std::endl;
+	x_str = std::to_string(x);
+	Message.append(x_str);
+	Message.append(",");
+	y_str = std::to_string(y);
+	Message.append(y_str);
+	SDLNet_TCP_Send(tcpsock, Message.c_str(), Message.length() + 1);
     for(Card card : placedCards) {
         std::cout << card.getCardType() << " ";
         if (card.cardButton.ownsClick(x, y, card.cardRect)) {
@@ -357,7 +374,11 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
 
 // Quits and closes libraries
 int SDL_Wrapper::teardown(){
-    IMG_Quit();
+	SDLNet_TCP_Close(tcpsock);
+	SDLNet_FreeSocketSet(Client_set);
+	SDL_WaitThread(thread, &threadReturnValue);
+	
+	IMG_Quit();
     SDL_DestroyWindow(this->mainWindow);
     SDL_Quit();
     TTF_Quit();
@@ -418,6 +439,49 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
 
     }
     return false;
+}
+
+void SDL_Wrapper::sendPacket(std::string Msg) {
+	SDLNet_TCP_Send(tcpsock, Msg.c_str(), Msg.length());
+}
+int SDL_Wrapper::thread_func_wrapper(void* data)
+{
+	SDL_Wrapper* self = static_cast<SDL_Wrapper*>(data);
+	return self->receivingThread();
+}
+int SDL_Wrapper::receivingThread(void){
+	while (quit) {
+		if (SDLNet_CheckSockets(Client_set, 0) > 0) {
+			if (SDLNet_SocketReady(tcpsock)) {
+
+				SDLNet_TCP_Recv(tcpsock, Msg, 1024);
+
+				// Split the string into an x and y
+				if (strcmp(Msg, "YT") == 0) {
+					yourTurn = true;
+				}
+				else if (strcmp(Msg, "quit") == 0) {
+					quit = false;
+				}
+				else {
+					i = 0;
+					std::stringstream ssin;
+					while (std::getline(ssin, token, ',') && i < 4) {
+						arr[i] = token;
+						i++;
+					}
+					if (arr[0] == "c") {
+						handleClick(stoi(arr[1]), stoi(arr[1]));
+					}
+					else if (arr[0] == "p") {
+						//handle movement here
+					}
+
+				}
+			}
+
+		}
+	}
 }
 
 int SDL_Wrapper::getWindowHeight() {

@@ -9,16 +9,16 @@
 #ifndef SDL_Wrapper_hpp
 #define SDL_Wrapper_hpp
 
+#include<string>
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_net.h>
+#include <SDL_net.h>
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <vector>
-#include <string>
-#include <cstring>
+#include<sstream>
 #include "../Classes/Card.hpp"
 #include "../Classes/Timer.hpp"
 #include "../Classes/Sound.hpp"
@@ -35,6 +35,8 @@ public:
     // Is the program in debugging mode
     bool debug = true;
     int clients = 0;
+
+
 
     // Create a SDL Wrapper with height/width of window
     SDL_Wrapper(int h, int w);
@@ -76,6 +78,11 @@ public:
     void cardPlacer (int mousex, int mousey);
     // Snyc FPS
     void syncFPS();
+	//send Msg;
+	void sendPacket(std::string Msg);
+	//receiving thread
+	static int thread_func_wrapper(void* data);
+	int receivingThread(void);
 
 
 
@@ -116,8 +123,24 @@ private:
     SDL_Renderer* mainRenderer = NULL;
 
     bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
-
-
+	//Networking vars
+	bool yourTurn = false;
+	SDLNet_SocketSet Client_set = SDLNet_AllocSocketSet(1);
+	char Msg[1024];
+	int Your_num;
+	int Len;
+	bool running = true;
+	int timeout = 0;
+	int i = 0;
+	IPaddress Server_IP;
+	std::string Message;
+	std::string token;
+	std::string arr[4];
+	std::string x_str;
+	std::string y_str;
+	TCPsocket tcpsock;
+	SDL_Thread *thread;
+	int threadReturnValue;
 };
 
 
