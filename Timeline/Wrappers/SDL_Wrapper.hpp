@@ -63,6 +63,7 @@ public:
 
     // Handle click at (X, Y)
     void handleClick(int x, int y);
+    void handleMovement(int player);
     // Display message at x, y, with a height of h
     void displayText(const char* message, int x, int y, int h);
     void displayText(const char* message, int x, int y, int h, SDL_Color c);

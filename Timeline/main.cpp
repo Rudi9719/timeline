@@ -18,7 +18,7 @@ int WinMain(int argc, const char* argv[]) {
 
 
 int main(int argc, const char * argv[]) {
-	int i = 0;
+	int currentPlayer = 0;
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
         
@@ -43,22 +43,26 @@ int main(int argc, const char * argv[]) {
                                 case SDLK_SPACE:
                                         break;
                                     case SDLK_UP:
-                                        wrapper.players[i].movePlayer(0, -4);
+                                        wrapper.players[currentPlayer].movePlayer(0, -15);
+                                        wrapper.handleMovement(currentPlayer);
                                         break;
                                     case SDLK_DOWN:
-                                        wrapper.players[i].movePlayer(0, 4);
+                                        wrapper.players[currentPlayer].movePlayer(0, 15);
+                                        wrapper.handleMovement(currentPlayer);
                                         break;
                                     case SDLK_LEFT:
-                                        wrapper.players[i].movePlayer(-4, 0);
+                                        wrapper.players[currentPlayer].movePlayer(-15, 0);
+                                        wrapper.handleMovement(currentPlayer);
                                         break;
                                     case SDLK_RIGHT:
-                                        wrapper.players[i].movePlayer(4, 0);
+                                        wrapper.players[currentPlayer].movePlayer(15, 0);
+                                        wrapper.handleMovement(currentPlayer);
                                         break;
 									case SDLK_RETURN:
-										if(i >= 4){
-											i=0;
+										if(currentPlayer == 4){
+											currentPlayer=0;
 										}else{
-											i++;
+											currentPlayer++;
 										}
                                 } // End switch on key
                                 case SDL_MOUSEBUTTONDOWN:
