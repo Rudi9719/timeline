@@ -18,7 +18,7 @@ int WinMain(int argc, const char* argv[]) {
 
 
 int main(int argc, const char * argv[]) {
-
+	int i = 0;
         SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
         SDL_Event event;
         
@@ -43,18 +43,23 @@ int main(int argc, const char * argv[]) {
                                 case SDLK_SPACE:
                                         break;
                                     case SDLK_UP:
-                                        wrapper.players[1].movePlayer(0, -4);
+                                        wrapper.players[i].movePlayer(0, -4);
                                         break;
                                     case SDLK_DOWN:
-                                        wrapper.players[1].movePlayer(0, 4);
+                                        wrapper.players[i].movePlayer(0, 4);
                                         break;
                                     case SDLK_LEFT:
-                                        wrapper.players[1].movePlayer(-4, 0);
+                                        wrapper.players[i].movePlayer(-4, 0);
                                         break;
                                     case SDLK_RIGHT:
-                                        wrapper.players[1].movePlayer(4, 0);
+                                        wrapper.players[i].movePlayer(4, 0);
                                         break;
-
+									case SDLK_RETURN:
+										if(i >= 4){
+											i=0;
+										}else{
+											i++;
+										}
                                 } // End switch on key
                                 case SDL_MOUSEBUTTONDOWN:
                                         if (event.button.button == SDL_BUTTON_LEFT) {
