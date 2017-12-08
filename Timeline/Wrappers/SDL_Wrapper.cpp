@@ -454,7 +454,7 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
 }
 
 void SDL_Wrapper::sendPacket(std::string Msg) {
-	SDLNet_TCP_Send(tcpsock, Msg.c_str(), Msg.length());
+	SDLNet_TCP_Send(tcpsock, Msg.c_str(), Msg.length()+1);
 }
 
 int SDL_Wrapper::receivingThread(){
