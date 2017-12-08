@@ -456,13 +456,8 @@ bool SDL_Wrapper::init(SDL_Window* window, SDL_Surface* screenSurface, int width
 void SDL_Wrapper::sendPacket(std::string Msg) {
 	SDLNet_TCP_Send(tcpsock, Msg.c_str(), Msg.length());
 }
-int SDL_Wrapper::thread_func_wrapper(void* data)
-{
-	SDL_Wrapper* self = static_cast<SDL_Wrapper*>(data);
-	return self->receivingThread();
-}
-int SDL_Wrapper::receivingThread(void){
-	while (quit) {
+
+int SDL_Wrapper::receivingThread(){
 		if (SDLNet_CheckSockets(Client_set, 0) > 0) {
 			if (SDLNet_SocketReady(tcpsock)) {
 
@@ -482,8 +477,8 @@ int SDL_Wrapper::receivingThread(void){
 						arr[i] = token;
 						i++;
 					}
-					if (arr[0] == "c") {
-						handleClick(stoi(arr[1]), stoi(arr[1]));
+					if (strcmp(arr[0].c_str(),"c") == 0 ) {
+						handleClick(stoi(arr[1]), stoi(arr[2]));
 					}
 					else if (arr[0] == "p") {
 						//handle movement here
@@ -493,7 +488,6 @@ int SDL_Wrapper::receivingThread(void){
 			}
 
 		}
-	}
     return 0;
 }
 

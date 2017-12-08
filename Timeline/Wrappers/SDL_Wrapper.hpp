@@ -82,9 +82,9 @@ public:
 	//send Msg;
 	void sendPacket(std::string Msg);
 	//receiving thread
-	static int thread_func_wrapper(void* data);
 	int receivingThread(void);
-
+	bool yourTurn = false;
+	int Your_num;
     
 
 
@@ -125,10 +125,9 @@ private:
 
     bool init(SDL_Window* window, SDL_Surface* screenSurface, int width, int height);
 	//Networking vars
-	bool yourTurn = false;
+	
 	SDLNet_SocketSet Client_set = SDLNet_AllocSocketSet(1);
 	char Msg[1024];
-	int Your_num;
 	int Len;
 	bool running = true;
 	int timeout = 0;
@@ -137,11 +136,9 @@ private:
 	std::string Message;
 	std::string token;
 	std::string arr[4];
-	std::string x_str;
-	std::string y_str;
 	TCPsocket tcpsock;
-	SDL_Thread *thread;
-	int threadReturnValue;
+	
+	
 };
 
 
