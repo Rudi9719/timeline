@@ -480,8 +480,10 @@ int SDL_Wrapper::receivingThread(){
 					if (strcmp(arr[0].c_str(),"c") == 0 ) {
 						handleClick(stoi(arr[1]), stoi(arr[2]));
 					}
-					else if (arr[0] == "p") {
+					else if (strcmp(arr[0].c_str(), "p") == 0) {
 						//handle movement here
+						players[stoi(arr[1])].movePlayer(stoi(arr[2]), stoi(arr[3]));
+						handleMovement(stoi(arr[1]));
 					}
 
 				}
