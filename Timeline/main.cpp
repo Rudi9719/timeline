@@ -16,9 +16,17 @@ int WinMain(int argc, const char* argv[]) {
 }
 
 int main(int argc, const char * argv[]) {
+<<<<<<< HEAD
 
     SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
     SDL_Event event;
+=======
+	int currentPlayer = 0;
+        SDL_Wrapper wrapper = SDL_Wrapper(850, 1000);
+        SDL_Event event;
+        
+
+>>>>>>> master
 
     while (!wrapper.quit) {
         while (SDL_WaitEventTimeout(&event, 4)) {
@@ -37,6 +45,7 @@ int main(int argc, const char * argv[]) {
                     wrapper.quit = true;
                     break;
 
+<<<<<<< HEAD
                 case SDLK_SPACE:
                     break;
 
@@ -46,6 +55,38 @@ int main(int argc, const char * argv[]) {
                     int x = event.button.x;
                     int y = event.button.y;
                     wrapper.handleClick(x, y);
+=======
+                                case SDLK_SPACE:
+                                        break;
+                                    case SDLK_UP:
+                                        wrapper.players[currentPlayer].movePlayer(0, -15);
+                                        wrapper.handleMovement(currentPlayer);
+                                        break;
+                                    case SDLK_DOWN:
+                                        wrapper.players[currentPlayer].movePlayer(0, 15);
+                                        wrapper.handleMovement(currentPlayer);
+                                        break;
+                                    case SDLK_LEFT:
+                                        wrapper.players[currentPlayer].movePlayer(-15, 0);
+                                        wrapper.handleMovement(currentPlayer);
+                                        break;
+                                    case SDLK_RIGHT:
+                                        wrapper.players[currentPlayer].movePlayer(15, 0);
+                                        wrapper.handleMovement(currentPlayer);
+                                        break;
+									case SDLK_RETURN:
+										if(currentPlayer == 4){
+											currentPlayer=0;
+										}else{
+											currentPlayer++;
+										}
+                                } // End switch on key
+                                case SDL_MOUSEBUTTONDOWN:
+                                        if (event.button.button == SDL_BUTTON_LEFT) {
+                                            int x = event.button.x;
+                                            int y = event.button.y;
+                                            wrapper.handleClick(x, y);
+>>>>>>> master
 
                 }
                 break;

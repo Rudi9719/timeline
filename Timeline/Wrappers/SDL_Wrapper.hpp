@@ -65,6 +65,7 @@ public:
 
     // Handle click at (X, Y)
     void handleClick(int x, int y);
+    void handleMovement(int player);
     // Display message at x, y, with a height of h
     void displayText(const char* message, int x, int y, int h);
     void displayText(const char* message, int x, int y, int h, SDL_Color c);
@@ -84,18 +85,13 @@ public:
 	static int thread_func_wrapper(void* data);
 	int receivingThread(void);
 
-
+    
 
 
     // Start FPS Called Automatically.
     void startFPS();
     // Close the program down and return the error/ok status
     int teardown();
-
-
-private:
-
-    Market sharedMarket = Market();
     Player players[5]= {
         Player(0, 0, &sharedMarket),
         Player(0, 0, &sharedMarket),
@@ -103,6 +99,11 @@ private:
         Player(0, 0, &sharedMarket),
         Player(0, 0, &sharedMarket)
     };
+
+private:
+
+    Market sharedMarket = Market();
+
     Sound sound;
     int deck_pos = 0;
 
