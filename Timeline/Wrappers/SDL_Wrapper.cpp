@@ -111,12 +111,6 @@ void SDL_Wrapper::displayText(const char* message, int x, int y, int h, SDL_Colo
 void SDL_Wrapper::handleClick(int x, int y) {
     std::cout << "Mouse Event:" << std::endl;
     std::cout << "X: " << x << " Y: " << y << std::endl;
-	x_str = std::to_string(x);
-	Message.append(x_str);
-	Message.append(",");
-	y_str = std::to_string(y);
-	Message.append(y_str);
-	SDLNet_TCP_Send(tcpsock, Message.c_str(), Message.length() + 1);
     for(Card card : placedCards) {
         std::cout << card.getCardType() << " ";
         if (card.cardButton.ownsClick(x, y, card.cardRect)) {
