@@ -239,13 +239,15 @@ void SDL_Wrapper::displayCards() {
         SDL_RenderCopy(this->mainRenderer,texture,NULL,&placedCards.at(i).cardRect);
         //SDL_RenderFillRect(this -> mainRenderer, &placedCards.at(i).cardRect);
     }
-    SDL_Surface *img = players[0].img;
-    img = SDL_LoadBMP(players[0].filePath.str().c_str());
-    if(img == NULL)
-        std::cout << "Error loading testcard BMP" << std::endl;
-    SDL_Texture *text = players[0].playerTexture;
-    text = SDL_CreateTextureFromSurface(this -> mainRenderer, img);
-    SDL_RenderCopy(this -> mainRenderer, text, NULL, &players[0].playerRect);
+    for (int i = 0; i < 5; i++) {
+        SDL_Surface *img = players[i].img;
+        img = SDL_LoadBMP(players[i].filePath.str().c_str());
+        if(img == NULL)
+            std::cout << "Error loading testcard BMP" << std::endl;
+        SDL_Texture *text = players[i].playerTexture;
+        text = SDL_CreateTextureFromSurface(this -> mainRenderer, img);
+        SDL_RenderCopy(this -> mainRenderer, text, NULL, &players[i].playerRect);
+    }
     //displayStaticCards();
 }
 
