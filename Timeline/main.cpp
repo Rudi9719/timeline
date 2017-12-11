@@ -81,7 +81,7 @@ int main(int argc, const char * argv[]) {
 					break;
 				case SDLK_RETURN:
 				if(wrapper.yourTurn){
-					wapper.yourTurn = false;
+                    wrapper.yourTurn = false;
 					wrapper.sendPacket("YT");
 				}
 					break;
@@ -93,7 +93,7 @@ int main(int argc, const char * argv[]) {
 					int y = event.button.y;
 					wrapper.handleClick(x, y);
 					tmp = "c," + std::to_string(x) + "," + std::to_string(y);
-					wapper.sendPacket(tmp);
+                    wrapper.sendPacket(tmp);
 				}
 				break;
 
