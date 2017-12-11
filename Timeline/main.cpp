@@ -79,7 +79,12 @@ int main(int argc, const char * argv[]) {
 					wrapper.sendPacket(tmp);
 					}
 					break;
-
+				case SDLK_RETURN:
+				if(wrapper.yourTurn){
+					wapper.yourTurn = false;
+					wrapper.sendPacket("YT");
+				}
+					break;
 				} // End switch on key
 			case SDL_MOUSEBUTTONDOWN:
 				if(wrapper.yourTurn){}
@@ -88,6 +93,7 @@ int main(int argc, const char * argv[]) {
 					int y = event.button.y;
 					wrapper.handleClick(x, y);
 					tmp = "c," + std::to_string(x) + "," + std::to_string(y);
+					wapper.sendPacket(tmp);
 				}
 				break;
 

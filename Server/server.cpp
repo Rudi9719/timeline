@@ -10,31 +10,6 @@ Setting up SDL and SDL_net
 #include<ctime>
 #include<cstring>
 
-//Defining Max lenght of string that Client can send to the server
-#define MAXLEN 1024
-using namespace std;
-typedef struct {
-	int * timeout;
-	bool * running;
-} ThreadData;
-
-//Time out function:Send timeout to all clients every 3 seconds if error quit
-int Timeout( void* data) {
-	ThreadData *tdata = (ThreadData*)data;
-	int *timeout = tdata->timeout;
-	bool *running = tdata->running;
-	free(data);
-	while (*running) {
-		SDL_Delay(1000);
-			*timeout++;
-		if (*timeout >= 10) {
-			*running = false;
-		}
-	}
-			return 0;
-}
-
-
 
 int main(int argc, char **argv) {
 	// Initialize SDL_net library
@@ -72,9 +47,6 @@ int main(int argc, char **argv) {
 		cout << "Please enter number of players between 2 and 5" << endl;
 		cin >> players;
 	}
-	ThreadData *data = (ThreadData*)malloc(sizeof(ThreadData));
-	data->running = &Running;
-	data->timeout = &timeout;
 	
 	
 	while (Clients < players) {
@@ -108,7 +80,7 @@ int main(int argc, char **argv) {
 
 		}
 	}
-	SDL_Thread * mythread = SDL_CreateThread(Timeout,"TImeout", data);
+
 	do {
 		//Check Data
 		while (SDLNet_CheckSockets(socket, 0) > 0) {
@@ -121,10 +93,15 @@ int main(int argc, char **argv) {
 					// delete socket of client and open it up to new client
 
 							Running = false;
-						
 					}
-					else
-					{
+					else if (strcmp(temp_char, "YT") ==0 ) {
+						if (i == Clients) {
+								SDLNet_TCP_Send(client_sock[0], "YT", 3);
+							}
+							else {
+								SDLNet_TCP_Send(client_sock[i + 1], "YT", 3);
+							}
+					}else{
 						//send all data recieve from client I to all clients except I
 						for (int k = 0; k < Clients; k++) {
 							if (k != i) {
@@ -139,12 +116,7 @@ int main(int argc, char **argv) {
 								
 							}
 						//After send the data, Send a signal to the next person to go
-							if (i == Clients) {
-								SDLNet_TCP_Send(client_sock[0], "YT", 3);
-							}
-							else {
-								SDLNet_TCP_Send(client_sock[i + 1], "YT", 3);
-							}
+							
 						}
 					}
 				}
@@ -163,7 +135,6 @@ int main(int argc, char **argv) {
 
 
 	} while (Running);
-	SDL_WaitThread(mythread, &threadReturnValue);
 	cin >> Clients;
 	cout << "server is closeing" << endl;
 	//De deinitialize everything

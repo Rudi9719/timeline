@@ -38,8 +38,8 @@ SDL_Wrapper::SDL_Wrapper(int h, int w){
 		Your_num = atoi(Msg);
 		if (Msg[0] == '0') {
 			yourTurn = true;
+			SDLNet_TCP_Send(tcpsock, "hi", 3);
 		}
-		thread = SDL_CreateThread(thread_func_wrapper, NULL, this);
     }
     
     cardDeck_paths->printUnshuffled();
@@ -388,7 +388,6 @@ SDL_Surface* SDL_Wrapper::loadImage(const char* path) {
 int SDL_Wrapper::teardown(){
 	SDLNet_TCP_Close(tcpsock);
 	SDLNet_FreeSocketSet(Client_set);
-	SDL_WaitThread(thread, &threadReturnValue);
 	
 	IMG_Quit();
     SDL_DestroyWindow(this->mainWindow);
